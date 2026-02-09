@@ -11,14 +11,18 @@ export default function Loading() {
   }, [])
 
   return (
-    <div className="fixed inset-0 z-50 bg-black">
+    <div className="fixed inset-0 z-50 bg-black flex items-center justify-center overflow-hidden">
       <video
         ref={videoRef}
         src={loadingVideo}
         autoPlay
         muted
         playsInline
-        className="w-full h-full object-cover"
+        className="
+          w-full
+          h-[100dvh]
+          object-contain
+        "
       />
     </div>
   )
