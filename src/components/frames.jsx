@@ -1,24 +1,26 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 
 const Frames = () => {
   const [currentFrame, setCurrentFrame] = useState(0);
   const [frames, setFrames] = useState([]);
   const [scrollPercent, setScrollPercent] = useState(0);
-  const containerRef = useRef(null);
-  const totalFrames = 168;
 
-  // Importar todos os frames dinamicamente
+  const totalFramesFallback = 168;
+
+  // ===============================
+  // IMPORTAÇÃO DOS FRAMES
+  // ===============================
   useEffect(() => {
     const importFrames = async () => {
-      const frameModules = import.meta.glob('../assets/videos/frames/*.jpg', {
-        eager: true,
-      });
+      const frameModules = import.meta.glob(
+        '../assets/videos/frames/*.jpg',
+        { eager: true }
+      );
 
-      // Ordenar os frames por números
       const sortedFrames = Object.keys(frameModules)
         .sort((a, b) => {
-          const numA = parseInt(a.match(/\d+/)[0]);
-          const numB = parseInt(b.match(/\d+/)[0]);
+          const numA = parseInt(a.match(/\d+/)?.[0] || 0, 10);
+          const numB = parseInt(b.match(/\d+/)?.[0] || 0, 10);
           return numA - numB;
         })
         .map((path) => frameModules[path].default);
@@ -29,59 +31,98 @@ const Frames = () => {
     importFrames();
   }, []);
 
-  // Escutar o evento de scroll
+  // ===============================
+  // SCROLL CONTROLLER
+  // ===============================
   useEffect(() => {
-    const handleScroll = () => {
-      if (!containerRef.current) return;
+    let ticking = false;
 
-      // Altura total necessária para passar por todos os frames (200vh)
-      const totalScrollHeight = 200 * window.innerHeight / 100;
-      // Posição do scroll atual
+    const handleScroll = () => {
+      const totalScrollHeight = 2 * window.innerHeight; // 200vh
       const scrollTop = window.scrollY;
 
-      // Calcular qual porcentagem foi scrollado (0 a 1)
       const percent = Math.min(1, scrollTop / totalScrollHeight);
       setScrollPercent(percent);
 
-      // Mapear a porcentagem para o índice do frame (0 a 167)
-      const frameIndex = Math.floor(percent * (totalFrames - 1));
-      setCurrentFrame(Math.min(frameIndex, totalFrames - 1));
+      if (!frames.length) return;
+
+      const frameIndex =
+        percent >= 0.99
+          ? frames.length - 1
+          : Math.floor(percent * (frames.length - 1));
+
+      setCurrentFrame(frameIndex);
     };
 
-    window.addEventListener('scroll', handleScroll);
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
+    const onScroll = () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(() => {
+          handleScroll();
+          ticking = false;
+        });
+      }
     };
-  }, []);
+
+    window.addEventListener('scroll', onScroll);
+    return () => window.removeEventListener('scroll', onScroll);
+  }, [frames]);
+
+  const isEnd = scrollPercent >= 0.99;
 
   return (
     <>
-      {/* Container fixo na tela */}
+      {/* ===============================
+          FRAME FIXO (ANIMAÇÃO)
+      =============================== */}
       <div
-        ref={containerRef}
-        className={`${scrollPercent >= 0.99 ? 'relative' : 'fixed'} top-0 left-0 w-full h-screen flex items-center justify-center bg-black transition-all duration-700`}
-        style={{ zIndex: scrollPercent >= 0.99 ? 'auto' : 9999 }}
+        className={`fixed top-0 left-0 w-full h-screen bg-black flex items-center justify-center transition-opacity duration-300
+          ${isEnd ? 'opacity-0 pointer-events-none' : 'opacity-100'}
+        `}
+        style={{ zIndex: 9999 }}
       >
         {frames.length > 0 ? (
-          <div className="relative w-full h-full pointer-events-auto">
-            <img
-              src={frames[currentFrame]}
-              alt={`Frame ${currentFrame + 1}`}
-              className="w-full h-full object-cover"
-            />
-            {/* Indicador do frame atual - opcional */}
-            <div className="absolute bottom-4 right-4 bg-black bg-opacity-50 px-4 py-2 rounded text-white text-sm">
-              {currentFrame + 1} / {totalFrames}
-            </div>
-          </div>
+          <img
+            src={frames[currentFrame]}
+            alt={`Frame ${currentFrame + 1}`}
+            className="w-full h-full object-cover"
+          />
         ) : (
           <div className="text-white text-xl">Carregando vídeo...</div>
         )}
       </div>
 
-      {/* Spacer invisível para forçar o scroll necessário - desaparece ao atingir 99% */}
-      <div style={{ height: '200vh' }} />
+      {/* ===============================
+          SCROLL / PLACEHOLDER
+      =============================== */}
+      <div style={{ height: '200vh' }}>
+        {/* Último frame entra no fluxo */}
+        <div className="h-screen w-full">
+          {isEnd && frames.length > 0 && (
+            <img
+              src={frames[frames.length - 1]}
+              alt="Frame final"
+              className="w-full h-full object-cover"
+            />
+          )}
+        </div>
+
+        {/* ===============================
+            CONTEÚDO DO SITE
+        =============================== */}
+        <section className="min-h-screen bg-white text-black flex items-center justify-center">
+          <h1 className="text-4xl font-bold">
+            Continuação normal do site 🚀
+          </h1>
+        </section>
+      </div>
+
+      {/* ===============================
+          INDICADOR (OPCIONAL)
+      =============================== */}
+      <div className="fixed bottom-4 right-4 bg-black/60 px-4 py-2 rounded text-white text-sm z-[10000]">
+        {currentFrame + 1} / {frames.length || totalFramesFallback}
+      </div>
     </>
   );
 };
