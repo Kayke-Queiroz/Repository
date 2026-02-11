@@ -10,6 +10,8 @@ const Frames = () => {
   const [frames, setFrames] = useState([]);
   const [scrollPercent, setScrollPercent] = useState(0);
   const [hasReachedEnd, setHasReachedEnd] = useState(false);
+  const [isScrollLocked, setIsScrollLocked] = useState(false);
+  const [lockScrollY, setLockScrollY] = useState(0);
 
   const totalFramesFallback = 168;
 
@@ -47,6 +49,12 @@ const Frames = () => {
       const totalScrollHeight = SCROLL_HEIGHT_MULTIPLIER * window.innerHeight;
       const scrollTop = window.scrollY;
 
+      // enquanto estiver travado, mantém a posição e não atualiza animação
+      if (isScrollLocked) {
+        window.scrollTo(0, lockScrollY);
+        return;
+      }
+
       const rawPercent = Math.min(1, scrollTop / totalScrollHeight);
 
       // estado anterior: usamos para saber se já estávamos "travados" no fim
@@ -59,8 +67,17 @@ const Frames = () => {
       }
 
       // se ainda não tinha chegado no fim e agora passou do threshold, arma o "travamento"
-      if (!nextHasReachedEnd && rawPercent >= END_THRESHOLD) {
+      const becomingEndNow =
+        !nextHasReachedEnd && rawPercent >= END_THRESHOLD;
+
+      if (becomingEndNow) {
         nextHasReachedEnd = true;
+        // trava o scroll por ~1s na posição atual, mas sem esconder a barra
+        setIsScrollLocked(true);
+        setLockScrollY(scrollTop);
+        setTimeout(() => {
+          setIsScrollLocked(false);
+        }, 1000);
       }
 
       setHasReachedEnd(nextHasReachedEnd);
@@ -106,10 +123,10 @@ const Frames = () => {
 
     window.addEventListener('scroll', onScroll);
     return () => window.removeEventListener('scroll', onScroll);
-  }, [frames, hasReachedEnd]);
+  }, [frames, hasReachedEnd, isScrollLocked, lockScrollY]);
 
   const stickyEnd = END_THRESHOLD + STICKY_EXTRA_RANGE;
-  const isEnd = hasReachedEnd && scrollPercent >= stickyEnd;
+  const isEnd = hasReachedEnd && scrollPercent >= stickyEnd && !isScrollLocked;
 
   return (
     <>
