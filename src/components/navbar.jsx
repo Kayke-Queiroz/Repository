@@ -2,7 +2,7 @@ const Navbar = () => {
   return (
       <header className="
       fixed top-0 left-0 w-full
-      z-[10001]
+      z-nav
        bg-black/30 backdrop-blur-md
        border-b border-cyan-400/20
       ">

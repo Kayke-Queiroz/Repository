@@ -6,7 +6,7 @@ export default function HeroOverlay() {
   return (
     <section
       className={`
-        fixed top-0 left-0 w-full h-screen z-[10000]
+        fixed top-0 left-0 w-full h-screen z-hero
         flex items-center
         transition-all duration-500 ease-out
         ${hidden

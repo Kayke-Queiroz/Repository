@@ -1,9 +1,15 @@
 import { useState, useEffect } from 'react';
 
+const SCROLL_HEIGHT_MULTIPLIER = 2; // 200vh
+const END_THRESHOLD = 0.99;
+const STICKY_EXTRA_RANGE = 0.005; // 0.5% a mais depois do 99%
+const RESET_BELOW = 0.8; // se voltar muito, reseta o "travamento" final
+
 const Frames = () => {
   const [currentFrame, setCurrentFrame] = useState(0);
   const [frames, setFrames] = useState([]);
   const [scrollPercent, setScrollPercent] = useState(0);
+  const [hasReachedEnd, setHasReachedEnd] = useState(false);
 
   const totalFramesFallback = 168;
 
@@ -38,18 +44,52 @@ const Frames = () => {
     let ticking = false;
 
     const handleScroll = () => {
-      const totalScrollHeight = 2 * window.innerHeight; // 200vh
+      const totalScrollHeight = SCROLL_HEIGHT_MULTIPLIER * window.innerHeight;
       const scrollTop = window.scrollY;
 
-      const percent = Math.min(1, scrollTop / totalScrollHeight);
-      setScrollPercent(percent);
+      const rawPercent = Math.min(1, scrollTop / totalScrollHeight);
+
+      // estado anterior: usamos para saber se já estávamos "travados" no fim
+      const wasAtEnd = hasReachedEnd;
+      let nextHasReachedEnd = hasReachedEnd;
+
+      // se o usuário voltar bastante, libera para repetir a animação
+      if (nextHasReachedEnd && rawPercent < RESET_BELOW) {
+        nextHasReachedEnd = false;
+      }
+
+      // se ainda não tinha chegado no fim e agora passou do threshold, arma o "travamento"
+      if (!nextHasReachedEnd && rawPercent >= END_THRESHOLD) {
+        nextHasReachedEnd = true;
+      }
+
+      setHasReachedEnd(nextHasReachedEnd);
+
+      const stickyEnd = END_THRESHOLD + STICKY_EXTRA_RANGE;
+      // só podemos "sair" depois de já ter travado antes (wasAtEnd)
+      const canFinish = wasAtEnd && rawPercent >= stickyEnd;
+
+      let effectivePercent;
+
+      if (!nextHasReachedEnd) {
+        // ainda na animação normal
+        effectivePercent = rawPercent;
+      } else if (!canFinish) {
+        // chegou no fim, mas ainda não liberou para sair -> trava no último frame
+        effectivePercent = END_THRESHOLD;
+      } else {
+        // já estava travado e o usuário continuou descendo -> libera para sair
+        effectivePercent = rawPercent;
+      }
+
+      setScrollPercent(effectivePercent);
 
       if (!frames.length) return;
 
       const frameIndex =
-        percent >= 0.99
+        effectivePercent >= END_THRESHOLD
           ? frames.length - 1
-          : Math.floor(percent * (frames.length - 1));
+          : Math.floor(effectivePercent * (frames.length - 1));
 
       setCurrentFrame(frameIndex);
     };
@@ -66,9 +106,10 @@ const Frames = () => {
 
     window.addEventListener('scroll', onScroll);
     return () => window.removeEventListener('scroll', onScroll);
-  }, [frames]);
+  }, [frames, hasReachedEnd]);
 
-  const isEnd = scrollPercent >= 0.99;
+  const stickyEnd = END_THRESHOLD + STICKY_EXTRA_RANGE;
+  const isEnd = hasReachedEnd && scrollPercent >= stickyEnd;
 
   return (
     <>
@@ -76,10 +117,9 @@ const Frames = () => {
           FRAME FIXO (ANIMAÇÃO)
       =============================== */}
       <div
-        className={`fixed top-0 left-0 w-full h-screen bg-black flex items-center justify-center transition-opacity duration-300
+        className={`fixed top-0 left-0 w-full h-screen bg-black flex items-center justify-center transition-opacity duration-300 z-overlay
           ${isEnd ? 'opacity-0 pointer-events-none' : 'opacity-100'}
         `}
-        style={{ zIndex: 9999 }}
       >
         {frames.length > 0 ? (
           <img
@@ -120,7 +160,7 @@ const Frames = () => {
       {/* ===============================
           INDICADOR (OPCIONAL)
       =============================== */}
-      <div className="fixed bottom-4 right-4 bg-black/60 px-4 py-2 rounded text-white text-sm z-[10000]">
+      <div className="fixed bottom-4 right-4 bg-black/60 px-4 py-2 rounded text-white text-sm z-hud">
         {currentFrame + 1} / {frames.length || totalFramesFallback}
       </div>
     </>
