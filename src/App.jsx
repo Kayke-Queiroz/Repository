@@ -3,6 +3,8 @@ import Loading from './components/loading'
 import Frames from './components/frames'
 import Navbar from './components/navbar'
 import HeroOverlay from './components/HeroOverlay'
+import About from './components/About'
+import Skills from './components/Skills'
 
 const ENABLE_LOADING = false
 
@@ -18,9 +20,9 @@ export default function App() {
     <>
       <Navbar />
       <HeroOverlay />
-      <Frames />  
-      
-      
+      <Frames />
+
+
       <div className="min-h-screen bg-black text-white flex items-center justify-center">
         Conteúdo principal
       </div>
@@ -28,6 +30,10 @@ export default function App() {
       <div className="min-h-screen bg-black text-white flex items-center justify-center">
         outro container
       </div>
+
+      <About />
+      <Skills />
+
     </>
   )
 }
