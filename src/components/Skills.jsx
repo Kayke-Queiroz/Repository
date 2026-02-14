@@ -35,7 +35,7 @@ const categoryStyles = {
 // --- CONFIGURAÇÃO DE GEOMETRIA ---
 const ITEM_SIZE = 120; // Tamanho visual da bolinha
 const GAP_ARC = 150;   // [AJUSTÁVEL] Espaçamento entre os itens ao longo do arco (em pixels de arco). Aumente para separar, diminua para juntar.
-const RADIUS = 1400;   // Raio do círculo virtual
+const RADIUS = 1600;   // Raio do círculo virtual
 
 // Comprimento total do arco ocupado por todos os itens
 const TOTAL_ARC = skills.length * GAP_ARC;
