@@ -36,6 +36,7 @@ const ITEM_SIZE = 120;
 const GAP = 40;
 // Ajuste para garantir que o wrap cubra o espaço necessário
 const TOTAL_WIDTH = skills.length * (ITEM_SIZE + GAP);
+const RADIUS = 1200; // Raio da curva para calcular ângulo e altura corretamente
 
 const SkillItem = ({ skill, index, x }) => {
     const [isHovered, setIsHovered] = useState(false);
@@ -61,17 +62,25 @@ const SkillItem = ({ skill, index, x }) => {
     // Distância do zero (centro da tela)
     const dist = useTransform(position, (pos) => Math.abs(pos));
 
-    // Curva U Suave
-    const y = useTransform(dist, (d) => -1 * (d * d) / 1000);
+    // Curva Circular: Correlaciona rotação e altura baseada em um círculo (RADIUS)
+    const y = useTransform(position, (pos) => {
+        // Normaliza posição linear para radianos
+        const theta = pos / RADIUS;
+        // Fórmula do arco circular: y = -R * (1 - cos(theta))
+        // Isso cria a curva "tigela" (smile), onde o centro é 0 e as bordas sobem (negativo)
+        return -1 * RADIUS * (1 - Math.cos(theta));
+    });
+
+    const rotate = useTransform(position, (pos) => {
+        const theta = pos / RADIUS;
+        return theta * (180 / Math.PI);
+    });
 
     const scale = useTransform(dist, (d) => {
         // Se estiver longe demais (quase saindo do loop visual), pode diminuir ainda mais ou desaparecer
-        // Mas mantendo a lógica original por enquanto
         const s = 1 - (d / 1500);
         return Math.max(s, 0.6);
     });
-
-    const rotate = useTransform(position, (pos) => pos / 20);
 
     const zIndex = useTransform(dist, (d) => 100 - Math.floor(d / 10));
 
