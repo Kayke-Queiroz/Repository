@@ -6,6 +6,7 @@ import HeroOverlay from './components/HeroOverlay'
 import About from './components/About'
 import Skills from './components/Skills'
 import Certificates from './components/Certificates'
+import Footer from './components/Footer'
 
 const ENABLE_LOADING = false
 
@@ -28,14 +29,7 @@ export default function App() {
       </div>
 
       <Certificates />
-
-
-      <div className="min-h-screen bg-black text-white flex items-center justify-center">
-        outro container
-      </div>
-
-
-
+      <Footer />
     </>
   )
 }
