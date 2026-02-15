@@ -7,18 +7,24 @@
    =============================== */
 :root {
   /* Cores base (dark theme) */
-  --color-bg: #020617; /* slate-950 */
+  --color-bg: #020617;
+  /* slate-950 */
   --color-bg-elevated: #020617;
   --color-surface: #020617;
-  --color-border-subtle: rgba(148, 163, 184, 0.4); /* slate-400/40 */
+  --color-border-subtle: rgba(148, 163, 184, 0.4);
+  /* slate-400/40 */
 
   /* Texto */
-  --color-text: #e5e7eb; /* gray-200 */
-  --color-text-muted: #9ca3af; /* gray-400 */
-  --color-text-strong: #f9fafb; /* gray-50 */
+  --color-text: #e5e7eb;
+  /* gray-200 */
+  --color-text-muted: #9ca3af;
+  /* gray-400 */
+  --color-text-strong: #f9fafb;
+  /* gray-50 */
 
   /* Acentos */
-  --color-accent: #22d3ee; /* cyan-400 */
+  --color-accent: #22d3ee;
+  /* cyan-400 */
   --color-accent-soft: rgba(34, 211, 238, 0.12);
 
   /* Estado */
@@ -32,6 +38,7 @@
 }
 
 @layer base {
+
   html,
   body,
   #root {
@@ -41,6 +48,7 @@
   body {
     @apply antialiased;
     background: radial-gradient(circle at top, #0f172a 0, #020617 55%, #000 100%);
+    background-attachment: fixed;
     color: var(--color-text);
     font-family: var(--font-sans);
   }
@@ -69,5 +77,25 @@
 
   p {
     color: var(--color-text-muted);
+  }
+}
+
+@layer utilities {
+  .animate-spin-slow {
+    animation: spin-slow 8s linear infinite;
+  }
+
+  .animate-pulse-slow {
+    animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+}
+
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
   }
 }

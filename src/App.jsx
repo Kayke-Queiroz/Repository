@@ -4,6 +4,7 @@ import Frames from './components/frames'
 import Navbar from './components/navbar'
 import HeroOverlay from './components/HeroOverlay'
 import About from './components/About'
+import Journey from './components/Journey'
 import Skills from './components/Skills'
 import Certificates from './components/Certificates'
 import Projects from './components/Projects'
@@ -22,17 +23,14 @@ export default function App() {
   return (
     <>
       <Navbar />
-
-
-
-      <div className="min-h-screen bg-black text-white flex items-center justify-center">
-        Conteúdo principal
-      </div>
-
+      <HeroOverlay />
+      <Frames />
+      <About />
+      <Journey />
+      <Skills />
       <Projects />
-
       <Certificates />
-
+      <Footer />
     </>
   )
 }

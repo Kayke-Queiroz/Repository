@@ -153,7 +153,7 @@ export default function Skills() {
     const x = useMotionValue(0);
 
     return (
-        <section className="relative h-[100vh] w-full flex flex-col items-center justify-start overflow-hidden bg-black/40 z-0 pt-20">
+        <section className="relative h-[100vh] w-full flex flex-col items-center justify-start overflow-hidden z-0 pt-20">
 
             <div className="z-10 text-center pointer-events-none mb-10">
                 <h2 className="text-5xl font-bold text-white tracking-tight drop-shadow-xl">Tech Stack</h2>
