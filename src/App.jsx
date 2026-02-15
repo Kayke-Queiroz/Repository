@@ -6,6 +6,7 @@ import HeroOverlay from './components/HeroOverlay'
 import About from './components/About'
 import Skills from './components/Skills'
 import Certificates from './components/Certificates'
+import Projects from './components/Projects'
 import Footer from './components/Footer'
 
 const ENABLE_LOADING = false
@@ -28,8 +29,10 @@ export default function App() {
         Conteúdo principal
       </div>
 
+      <Projects />
+
       <Certificates />
-      <Footer />
+
     </>
   )
 }
