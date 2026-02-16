@@ -11,6 +11,7 @@ import Certificates from './components/Certificates'
 import Projects from './components/Projects'
 import Footer from './components/Footer'
 import BackgroundParticles from './components/BackgroundParticles'
+import HeroMessages from './components/HeroMessages'
 
 const ENABLE_LOADING = false
 
@@ -40,6 +41,7 @@ export default function App() {
       <Navbar />
       <HeroOverlay />
       <Frames />
+      <HeroMessages />
 
       {/* Background Particles - Visible only after Hero */}
       <BackgroundParticles show={showParticles} />
