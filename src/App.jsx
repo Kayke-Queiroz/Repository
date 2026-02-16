@@ -46,7 +46,8 @@ export default function App() {
       {/* Background Particles - Visible only after Hero */}
       <BackgroundParticles show={showParticles} />
 
-      <div className="relative z-content">
+      {/* Small space above content */}
+      <div className="relative z-content mt-[450px]">
         <About />
         <Journey />
         <Skills />

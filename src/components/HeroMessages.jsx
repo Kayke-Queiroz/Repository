@@ -3,8 +3,9 @@ import { useScrollShow } from "../hooks/useScrollShow";
 export default function HeroMessages() {
     // Start showing at 1.66 viewport height (Frame ~140)
     const showStart = useScrollShow(1.65);
-    // Stop showing at 2.3 (After "Frame 180"/lock duration)
-    const showEnd = useScrollShow(2.3);
+    // Stop showing IMMEDIATELY after Frame 168 (~200vh). 
+    // 2.05 gives a tiny buffer so it doesn't flicker during the lock itself.
+    const showEnd = useScrollShow(2.05);
 
     const isVisible = showStart && !showEnd;
 
