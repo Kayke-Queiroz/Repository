@@ -10,7 +10,7 @@ import Skills from './components/Skills'
 import Certificates from './components/Certificates'
 import Projects from './components/Projects'
 import Footer from './components/Footer'
-import TechParticles from './components/TechParticles'
+import BackgroundParticles from './components/BackgroundParticles'
 
 const ENABLE_LOADING = false
 
@@ -42,22 +42,9 @@ export default function App() {
       <Frames />
 
       {/* Background Particles - Visible only after Hero */}
-      <div
-        className={`fixed inset-0 z-0 transition-opacity duration-1000 ${showParticles ? 'opacity-50' : 'opacity-0'}`}
-        style={{ pointerEvents: 'none' }}
-      >
-        <TechParticles
-          options={{
-            color: '#22d3ee',
-            connectDistance: 130, // Conexões mais longas
-            particleCount: 100,   // Mais partículas
-            mouseDistance: 200    // Raio de interação maior
-          }}
-          className="pointer-events-auto"
-        />
-      </div>
+      <BackgroundParticles show={showParticles} />
 
-      <div className="relative z-10">
+      <div className="relative z-content">
         <About />
         <Journey />
         <Skills />

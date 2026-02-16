@@ -155,17 +155,16 @@ export default function useTechParticles(canvasRef, options = {}) {
         };
 
         window.addEventListener('resize', handleResize);
-        // Mouse events no canvas parent ou window? No canvas é melhor para controle local
-        canvas.addEventListener('mousemove', handleMouseMove);
-        canvas.addEventListener('mouseleave', handleMouseLeave);
+        window.addEventListener('mousemove', handleMouseMove);
+        document.addEventListener('mouseleave', handleMouseLeave);
 
         init();
         animate();
 
         return () => {
             window.removeEventListener('resize', handleResize);
-            canvas.removeEventListener('mousemove', handleMouseMove);
-            canvas.removeEventListener('mouseleave', handleMouseLeave);
+            window.removeEventListener('mousemove', handleMouseMove);
+            document.removeEventListener('mouseleave', handleMouseLeave);
             cancelAnimationFrame(animationFrameId.current);
         };
     }, []); // Re-run apenas se refs mudarem (o que não deve acontecer)

@@ -7,6 +7,8 @@ export default {
   theme: {
     extend: {
       zIndex: {
+        background: "0",
+        content: "10",
         overlay: "30",
         hero: "40",
         nav: "50",
