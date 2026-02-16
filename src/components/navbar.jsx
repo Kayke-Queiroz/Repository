@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 const Navbar = () => {
   return (
     <header
@@ -15,7 +17,8 @@ const Navbar = () => {
         "
       >
         {/* Logo (Left) */}
-        <div
+        <Link
+          to="/"
           className="
             text-2xl font-bold tracking-widest text-cyan-400
             drop-shadow-[0_0_10px_rgba(34,211,238,0.5)]
@@ -24,20 +27,29 @@ const Navbar = () => {
           "
         >
           Kayke.Santos
-        </div>
+        </Link>
 
         {/* Right Side: Links + Icon */}
         <div className="flex items-center gap-12">
           {/* Internal Links */}
           <ul className="flex gap-10 text-lg font-medium text-gray-300">
-            {["Sobre", "Projetos", "Tecnologia", "Contato"].map((item) => (
+            {["Curriculo", "Projetos", "Contato"].map((item) => (
               <li key={item} className="relative group">
-                <a
-                  href={`#${item.toLowerCase()}`}
-                  className="transition-colors duration-300 group-hover:text-cyan-400"
-                >
-                  {item}
-                </a>
+                {item === "Curriculo" ? (
+                  <Link
+                    to="/curriculo"
+                    className="transition-colors duration-300 group-hover:text-cyan-400"
+                  >
+                    {item}
+                  </Link>
+                ) : (
+                  <a
+                    href={`#${item.toLowerCase()}`}
+                    className="transition-colors duration-300 group-hover:text-cyan-400"
+                  >
+                    {item}
+                  </a>
+                )}
                 {/* Linha animada */}
                 <span
                   className="
