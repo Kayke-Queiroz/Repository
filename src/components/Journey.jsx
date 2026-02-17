@@ -1,32 +1,6 @@
 import { useRef } from "react";
 import { motion, useScroll, useSpring } from "framer-motion";
-
-const milestones = [
-    {
-        year: "2023",
-        title: "Início da Jornada",
-        description: "Mergulhei no mundo da programação, dominando os fundamentos da web (HTML, CSS, JS) e lógica.",
-        side: "left",
-    },
-    {
-        year: "2024",
-        title: "Especilização Front-end",
-        description: "Foco total em React e Next.js. Construção de interfaces complexas e responsivas com Tailwind.",
-        side: "right",
-    },
-    {
-        year: "2025",
-        title: "Expansão Full Stack",
-        description: "Integração com Back-end (Node.js), Bancos de Dados e Arquitetura de Software escalável.",
-        side: "left",
-    },
-    {
-        year: "Atual",
-        title: "Engenharia de IA",
-        description: "Explorando o potencial de LLMs, Agentes Autônomos e automação inteligente para criar o futuro.",
-        side: "right",
-    },
-];
+import { useLanguage } from "../context/LanguageContext";
 
 const JourneyCard = ({ data, index }) => {
     return (
@@ -94,6 +68,7 @@ const JourneyCard = ({ data, index }) => {
 
 export default function Journey() {
     const containerRef = useRef(null);
+    const { t } = useLanguage();
     const { scrollYProgress } = useScroll({
         target: containerRef,
         offset: ["start end", "end start"],
@@ -104,6 +79,12 @@ export default function Journey() {
         damping: 30,
         restDelta: 0.001
     });
+
+    // Need to assign 'side' property to milestones from translations, or just alternate based on index
+    const milestones = t.journey.milestones.map((m, i) => ({
+        ...m,
+        side: i % 2 === 0 ? "left" : "right"
+    }));
 
     return (
         <section id="trajeto" className="relative w-full py-20 overflow-hidden">
@@ -118,10 +99,10 @@ export default function Journey() {
                     className="inline-block"
                 >
                     <h2 className="text-5xl md:text-7xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 tracking-tighter filter drop-shadow-[0_0_10px_rgba(34,211,238,0.3)]">
-                        TRAJETÓRIA
+                        {t.journey.title}
                     </h2>
                     <div className="h-1 w-full bg-gradient-to-r from-transparent via-cyan-500 to-transparent mt-2 opacity-50 blur-[1px]" />
-                    <p className="text-gray-400 mt-4 tracking-widest text-sm uppercase">Minha evolução através do código</p>
+                    <p className="text-gray-400 mt-4 tracking-widest text-sm uppercase">{t.journey.subtitle}</p>
                 </motion.div>
             </div>
 
@@ -144,7 +125,6 @@ export default function Journey() {
                         </div>
                     ))}
                 </div>
-
             </div>
 
             {/* Efeitos de Fundo Ambientais */}

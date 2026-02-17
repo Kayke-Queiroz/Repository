@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useLanguage } from '../context/LanguageContext';
 
 const SCROLL_HEIGHT_MULTIPLIER = 2; // 200vh
 const END_THRESHOLD = 0.99;
@@ -12,6 +13,7 @@ const Frames = () => {
   const [hasReachedEnd, setHasReachedEnd] = useState(false);
   const [isScrollLocked, setIsScrollLocked] = useState(false);
   const [lockScrollY, setLockScrollY] = useState(0);
+  const { t } = useLanguage();
 
   const totalFramesFallback = 168;
 
@@ -145,7 +147,7 @@ const Frames = () => {
             className="w-full h-full object-cover"
           />
         ) : (
-          <div className="text-white text-xl">Carregando vídeo...</div>
+          <div className="text-white text-xl">{t.frames.loading}</div>
         )}
       </div>
 

@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
+import { useLanguage } from '../context/LanguageContext';
 
 const About = () => {
     const [offsetY, setOffsetY] = useState(0);
+    const { t } = useLanguage();
 
     // Parallax simples para um efeito "divertido" de profundidade
     useEffect(() => {
@@ -49,17 +51,17 @@ const About = () => {
 
                         <img
                             src="https://placehold.co/600x800/1e293b/ffffff?text=Me"
-                            alt="Sobre Mim"
+                            alt={t.about.imageAlt}
                             className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
                         />
 
                         {/* Texto flutuante na imagem */}
                         <div className="absolute bottom-6 left-6 z-30">
                             <div className="text-cyan-400 text-xs font-mono mb-1 tracking-widest uppercase">
-                                Identity Verified
+                                {t.about.identityVerified}
                             </div>
                             <div className="text-white text-xl font-bold font-mono">
-                                K. Santos // DEV
+                                {t.about.devTag}
                             </div>
                         </div>
                     </div>
@@ -73,22 +75,22 @@ const About = () => {
                 <div className="space-y-8">
                     <div className="space-y-2">
                         <h2 className="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400">
-                            Sobre Mim
+                            {t.about.title}
                         </h2>
                         <div className="h-1 w-20 bg-cyan-500 rounded-full" />
                     </div>
 
                     <p className="text-gray-300 text-lg leading-relaxed">
-                        Olá! Sou um desenvolvedor apaixonado por criar experiências digitais que unem <span className="text-cyan-400 font-semibold">design futurista</span> e performance extrema.
+                        {t.about.p1}
                     </p>
 
                     <p className="text-gray-400 text-lg leading-relaxed">
-                        Minha jornada começou com a curiosidade de entender como as coisas funcionam por trás da tela. Hoje, transformo linhas de código em soluções visuais impactantes e sistemas de automação inteligentes. Quando não estou codando, estou explorando novas tecnologias de IA ou aprimorando meu setup.
+                        {t.about.p2}
                     </p>
 
                     <div className="pt-4">
                         <div className="inline-flex flex-wrap gap-4">
-                            {['Criativo', 'Proativo', 'Detalhista'].map((trait, index) => (
+                            {t.about.traits.map((trait, index) => (
                                 <div
                                     key={trait}
                                     className="
@@ -116,7 +118,7 @@ const About = () => {
                     >
                         <div className="absolute inset-0 w-0 bg-gradient-to-r from-cyan-500 to-blue-600 transition-all duration-[250ms] ease-out group-hover:w-full opacity-100" />
                         <span className="relative text-cyan-400 group-hover:text-white font-bold tracking-wide transition-colors duration-300">
-                            Conheça minha jornada
+                            {t.about.button}
                         </span>
                         <div className="absolute inset-0 border border-cyan-500/30 rounded-lg pointer-events-none" />
                     </button>

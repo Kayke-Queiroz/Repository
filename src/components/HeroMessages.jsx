@@ -1,4 +1,5 @@
 import { useScrollShow } from "../hooks/useScrollShow";
+import { useLanguage } from "../context/LanguageContext";
 
 export default function HeroMessages() {
     // Start showing at 1.66 viewport height (Frame ~140)
@@ -8,6 +9,7 @@ export default function HeroMessages() {
     const showEnd = useScrollShow(2.05);
 
     const isVisible = showStart && !showEnd;
+    const { t } = useLanguage();
 
     return (
         <div
@@ -27,11 +29,11 @@ export default function HeroMessages() {
 `}
             >
                 <h2 className="text-3xl md:text-5xl font-bold text-white leading-tight drop-shadow-[0_0_15px_rgba(34,211,238,0.5)]">
-                    Transforming<br />
-                    <span className="text-cyan-400">Ideas</span>
+                    {t.heroMessages.left.transforming}<br />
+                    <span className="text-cyan-400">{t.heroMessages.left.ideas}</span>
                 </h2>
                 <p className="text-xl md:text-2xl text-gray-300 font-light tracking-wide">
-                    Into Real Projects
+                    {t.heroMessages.left.into}
                 </p>
             </div>
 
@@ -44,11 +46,11 @@ export default function HeroMessages() {
 `}
             >
                 <h2 className="text-3xl md:text-5xl font-bold text-white leading-tight drop-shadow-[0_0_15px_rgba(34,211,238,0.5)]">
-                    From Idea<br />
-                    <span className="text-cyan-400">To Innovation</span>
+                    {t.heroMessages.right.from}<br />
+                    <span className="text-cyan-400">{t.heroMessages.right.to}</span>
                 </h2>
                 <p className="text-xl md:text-2xl text-gray-300 font-light tracking-wide">
-                    Real-World Solutions
+                    {t.heroMessages.right.real}
                 </p>
             </div>
         </div>

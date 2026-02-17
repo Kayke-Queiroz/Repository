@@ -1,5 +1,6 @@
 import { useRef, useEffect, useState } from "react";
 import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
+import { useLanguage } from "../context/LanguageContext";
 
 // Configuração de dados
 const skills = [
@@ -151,12 +152,21 @@ const SkillItem = ({ skill, index, x }) => {
 
 export default function Skills() {
     const x = useMotionValue(0);
+    const { t } = useLanguage();
+
+    const categoryLabels = {
+        "Languages": t.skills.categories.languages,
+        "Frameworks": t.skills.categories.frameworks,
+        "AI & Automation": t.skills.categories.ai,
+        "Tools": t.skills.categories.tools,
+        "Platforms": t.skills.categories.platforms,
+    };
 
     return (
         <section className="relative h-[100vh] w-full flex flex-col items-center justify-start overflow-hidden z-0 pt-20">
 
             <div className="z-10 text-center pointer-events-none mb-10">
-                <h2 className="text-5xl font-bold text-white tracking-tight drop-shadow-xl">Tech Stack</h2>
+                <h2 className="text-5xl font-bold text-white tracking-tight drop-shadow-xl">{t.skills.title}</h2>
                 <div className="w-12 h-1 bg-cyan-500 mx-auto mt-4 rounded-full shadow-[0_0_10px_cyan]" />
             </div>
 
@@ -184,7 +194,7 @@ export default function Skills() {
                     <div key={category} className="flex items-center gap-2 bg-black/30 px-3 py-1.5 rounded-full border border-white/10 backdrop-blur-sm">
                         <div className={`w-3 h-3 rounded-full bg-${style.color}-500 shadow-[0_0_8px_${style.color}]`} />
                         <span className={`text-xs font-medium text-${style.color}-300 uppercase tracking-wider`}>
-                            {category}
+                            {categoryLabels[category] || category}
                         </span>
                     </div>
                 ))}

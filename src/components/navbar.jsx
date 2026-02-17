@@ -1,6 +1,15 @@
 import { Link } from 'react-router-dom';
+import { useLanguage } from '../context/LanguageContext';
 
 const Navbar = () => {
+  const { t, language, toggleLanguage } = useLanguage();
+
+  const navItems = [
+    { key: 'curriculum', label: t.navbar.curriculum, path: '/curriculo' },
+    { key: 'projects', label: t.navbar.projects, path: '#projetos' },
+    { key: 'contact', label: t.navbar.contact, path: '#contato' },
+  ];
+
   return (
     <header
       className="
@@ -30,24 +39,24 @@ const Navbar = () => {
         </Link>
 
         {/* Right Side: Links + Icon */}
-        <div className="flex items-center gap-12">
+        <div className="flex items-center gap-8">
           {/* Internal Links */}
-          <ul className="flex gap-10 text-lg font-medium text-gray-300">
-            {["Curriculo", "Projetos", "Contato"].map((item) => (
-              <li key={item} className="relative group">
-                {item === "Curriculo" ? (
+          <ul className="flex gap-8 text-lg font-medium text-gray-300">
+            {navItems.map((item) => (
+              <li key={item.key} className="relative group">
+                {item.key === 'curriculum' ? (
                   <Link
-                    to="/curriculo"
+                    to={item.path}
                     className="transition-colors duration-300 group-hover:text-cyan-400"
                   >
-                    {item}
+                    {item.label}
                   </Link>
                 ) : (
                   <a
-                    href={`#${item.toLowerCase()}`}
+                    href={item.path}
                     className="transition-colors duration-300 group-hover:text-cyan-400"
                   >
-                    {item}
+                    {item.label}
                   </a>
                 )}
                 {/* Linha animada */}
@@ -66,6 +75,18 @@ const Navbar = () => {
 
           {/* Icon Divider */}
           <div className="w-px h-8 bg-white/20"></div>
+
+          {/* Language Toggle */}
+          <button
+            onClick={toggleLanguage}
+            className="
+              text-xl font-bold text-gray-300 hover:text-cyan-400 transition-colors
+              flex items-center gap-2
+            "
+            title="Switch Language"
+          >
+            {language === 'pt' ? '🇺🇸' : '🇧🇷'}
+          </button>
 
           {/* GitHub Icon */}
           <a

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useLanguage } from "../context/LanguageContext";
 
 // --- DADOS MOCKADOS (Pode ser movido para arquivo separado depois) ---
 import gitWebp from "../assets/videos/certificates/certificado.webp";
@@ -75,6 +76,7 @@ export default function Certificates() {
     const [isOpen, setIsOpen] = useState(false);
     const [selectedCategory, setSelectedCategory] = useState("All");
     const [flippedId, setFlippedId] = useState(null);
+    const { t } = useLanguage();
 
     const filteredCertificates = selectedCategory === "All"
         ? certificatesData
@@ -82,6 +84,14 @@ export default function Certificates() {
 
     const handleCardClick = (id) => {
         setFlippedId(flippedId === id ? null : id);
+    };
+
+    const categoryLabels = {
+        "All": t.certificates.categories.all,
+        "Front-end": t.certificates.categories.frontend,
+        "Back-end": t.certificates.categories.backend,
+        "AI & Automation": t.certificates.categories.ai,
+        "Tools": t.certificates.categories.tools,
     };
 
     return (
@@ -93,7 +103,7 @@ export default function Certificates() {
             >
                 <div className="flex items-center gap-4">
                     <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tight drop-shadow-xl group-hover:text-cyan-400 transition-colors duration-300">
-                        Certificates
+                        {t.certificates.title}
                     </h2>
                     <motion.span
                         animate={{ rotate: isOpen ? 180 : 0 }}
@@ -130,7 +140,7 @@ export default function Certificates() {
                                             : "bg-black/40 text-gray-400 hover:bg-white/10 hover:text-white"}
                   `}
                                 >
-                                    {cat}
+                                    {categoryLabels[cat] || cat}
                                 </button>
                             ))}
                         </div>
@@ -179,7 +189,7 @@ export default function Certificates() {
                                                                         cert.category === 'AI & Automation' ? 'border-green-500/50 text-green-400 bg-green-500/10' :
                                                                             'border-orange-500/50 text-orange-400 bg-orange-500/10'}
                                 `}>
-                                                                {cert.category}
+                                                                {categoryLabels[cert.category] || cert.category}
                                                             </span>
                                                             <span className="text-gray-500 text-xs font-mono">{cert.year}</span>
                                                         </div>
@@ -198,7 +208,7 @@ export default function Certificates() {
                                                         </span>
 
                                                         <span className="text-xs font-bold text-cyan-400 flex items-center gap-1 opacity-100 group-hover:text-cyan-300 transition-colors">
-                                                            Ver Detalhes
+                                                            {t.certificates.details}
                                                             <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                                                         </span>
                                                     </div>
@@ -238,7 +248,7 @@ export default function Certificates() {
                                                             onClick={(e) => e.stopPropagation()}
                                                         >
                                                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
-                                                            Abrir Certificado
+                                                            {t.certificates.open}
                                                         </a>
 
                                                         <button
@@ -247,7 +257,7 @@ export default function Certificates() {
                                                                 e.stopPropagation();
                                                                 handleCardClick(cert.id);
                                                             }}
-                                                            title="Fechar"
+                                                            title={t.certificates.close}
                                                         >
                                                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                                                         </button>
@@ -262,7 +272,7 @@ export default function Certificates() {
 
                         {filteredCertificates.length === 0 && (
                             <div className="text-center text-gray-500 py-10">
-                                Nenhum certificado encontrado nesta categoria.
+                                {t.certificates.empty}
                             </div>
                         )}
                     </motion.div>

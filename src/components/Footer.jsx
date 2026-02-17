@@ -1,6 +1,8 @@
+import { useLanguage } from "../context/LanguageContext";
 
 const Footer = () => {
     const currentYear = new Date().getFullYear();
+    const { t } = useLanguage();
 
     const socialLinks = [
         {
@@ -95,12 +97,11 @@ const Footer = () => {
             <div className="max-w-[1200px] mx-auto px-6 relative z-10 flex flex-col items-center">
                 {/* Logo / Título */}
                 <h2 className="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-500 mb-6 tracking-tight">
-                    Kayke Queiroz dos Santos
+                    {t.footer.title}
                 </h2>
 
                 <p className="text-gray-400 text-center max-w-lg mb-10 text-lg leading-relaxed">
-                    Desenvolvedor Web
-
+                    {t.footer.role}
                 </p>
 
                 {/* Links Sociais */}
@@ -133,7 +134,7 @@ const Footer = () => {
                 {/* Copyright */}
                 <div className="w-full border-t border-white/5 pt-8 flex flex-col md:flex-row items-center justify-center text-sm text-gray-500 gap-4">
                     <p>
-                        &copy; {currentYear} Kayke Santos. Todos os direitos reservados.
+                        &copy; {currentYear} {t.footer.rights}
                     </p>
                     <div className="flex gap-6">
                     </div>
