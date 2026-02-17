@@ -126,6 +126,11 @@ export const translations = {
         frames: {
             loading: "Carregando vídeo..."
         },
+        curriculum: {
+            title: "Currículo",
+            download: "Baixar Currículo",
+            filename: "Kayke_Santos_Curriculo.pdf"
+        },
         footer: {
             title: "Kayke Queiroz dos Santos",
             role: "Desenvolvedor Web",
@@ -258,6 +263,11 @@ export const translations = {
         },
         frames: {
             loading: "Loading video..."
+        },
+        curriculum: {
+            title: "Resume",
+            download: "Download Resume",
+            filename: "Kayke_Santos_Resume.pdf"
         },
         footer: {
             title: "Kayke Queiroz dos Santos",
