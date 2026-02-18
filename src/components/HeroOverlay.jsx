@@ -44,7 +44,7 @@ export default function HeroOverlay() {
         </div>
 
         {/* Right Image Frame */}
-        <div className="relative group">
+        <div className="relative group animate-float">
           {/* Glow Effect Layer */}
           <div className="absolute -inset-px bg-gradient-to-b from-cyan-400 to-blue-600 rounded-[2rem] opacity-80 blur-md group-hover:opacity-100 transition duration-500"></div>
 
