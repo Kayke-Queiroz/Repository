@@ -136,7 +136,7 @@ const Frames = () => {
           FRAME FIXO (ANIMAÇÃO)
       =============================== */}
       <div
-        className={`fixed top-0 left-0 w-full h-screen bg-black flex items-center justify-center transition-opacity duration-300 z-overlay
+        className={`fixed top-0 left-0 w-full h-[100dvh] bg-black flex items-center justify-center transition-opacity duration-300 z-overlay
           ${isEnd ? 'opacity-0 pointer-events-none' : 'opacity-100'}
         `}
       >
@@ -144,7 +144,7 @@ const Frames = () => {
           <img
             src={frames[currentFrame]}
             alt={`Frame ${currentFrame + 1}`}
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover object-center"
           />
         ) : (
           <div className="text-white text-xl">{t.frames.loading}</div>
@@ -156,12 +156,12 @@ const Frames = () => {
       =============================== */}
       <div style={{ height: '200vh' }}>
         {/* Último frame entra no fluxo */}
-        <div className="h-screen w-full">
+        <div className="h-[100dvh] w-full">
           {isEnd && frames.length > 0 && (
             <img
               src={frames[frames.length - 1]}
               alt="Frame final"
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover object-center"
             />
           )}
         </div>
