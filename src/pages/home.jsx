@@ -9,7 +9,7 @@ import Journey from '../components/Journey'
 import Skills from '../components/Skills'
 import Certificates from '../components/Certificates'
 import Projects from '../components/Projects'
-import Footer from '../components/footer'
+import Footer from '../components/Footer'
 import BackgroundParticles from '../components/BackgroundParticles'
 import HeroMessages from '../components/HeroMessages'
 

@@ -2,7 +2,7 @@ import Navbar from "../components/navbar";
 import { useLanguage } from "../context/LanguageContext";
 import TechParticles from "../components/TechParticles";
 import { motion } from "framer-motion";
-import Footer from "../components/footer";
+import Footer from "../components/Footer";
 
 export default function Curriculo() {
     const { t } = useLanguage();
