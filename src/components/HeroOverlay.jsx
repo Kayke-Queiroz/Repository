@@ -46,14 +46,14 @@ export default function HeroOverlay() {
         {/* Right Image Frame */}
         <div className="relative group">
           {/* Glow Effect Layer */}
-          <div className="absolute -inset-px bg-gradient-to-b from-cyan-400 to-blue-600 rounded-[2rem] opacity-60 blur-md group-hover:opacity-80 transition duration-500"></div>
+          <div className="absolute -inset-px bg-gradient-to-b from-cyan-400 to-blue-600 rounded-[2rem] opacity-80 blur-md group-hover:opacity-100 transition duration-500"></div>
 
           {/* Image Container */}
           <div className="relative w-80 h-[500px] rounded-[2rem] bg-gray-900 border border-white/10 overflow-hidden shadow-2xl flex items-center justify-center">
             {/* Placeholder for actual image */}
             <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/60 z-10"></div>
             <img
-              src="https://placehold.co/400x600/1e293b/ffffff?text=User+Image"
+              src="public/assets/icone.png"
               alt={t.hero.imageAlt}
               className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500"
             />
