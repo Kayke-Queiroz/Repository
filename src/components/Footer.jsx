@@ -96,7 +96,7 @@ const Footer = () => {
 
             <div className="max-w-[1200px] mx-auto px-6 relative z-10 flex flex-col items-center">
                 {/* Logo / Título */}
-                <h2 className="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-500 mb-6 tracking-tight">
+                <h2 className="text-2xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-500 mb-6 tracking-tight">
                     {t.footer.title}
                 </h2>
 

@@ -1,6 +1,7 @@
 import { useRef, useEffect, useState } from "react";
 import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
 import { useLanguage } from "../context/LanguageContext";
+import { useWindowSize } from "../hooks/useWindowSize";
 
 // Configuração de dados
 const skills = [
@@ -33,48 +34,53 @@ const categoryStyles = {
     "Platforms": { color: "green", border: "border-green-500/50", bg: "bg-green-900/20" },
 };
 
-// --- CONFIGURAÇÃO DE GEOMETRIA ---
-const ITEM_SIZE = 120; // Tamanho visual da bolinha
-const GAP_ARC = 150;   // [AJUSTÁVEL] Espaçamento entre os itens ao longo do arco (em pixels de arco). Aumente para separar, diminua para juntar.
-const RADIUS = 1600;   // Raio do círculo virtual
+// --- CONFIGURAÇÃO DE GEOMETRIA (Valores Iniciais / Padrão) ---
+const DESKTOP_CONFIG = {
+    itemSize: 120,
+    gapArc: 150,
+    radius: 1600
+};
 
-// Comprimento total do arco ocupado por todos os itens
-const TOTAL_ARC = skills.length * GAP_ARC;
+const MOBILE_CONFIG = {
+    itemSize: 80,  // Tamanho da bolinha (Aumente para crescer)
+    gapArc: 90,    // Distância entre elas (Diminua para juntar mais)
+    radius: 300    // Raio do arco (Diminua para fechar mais o círculo / Aumente para deixar mais reto)
+};
 
-const SkillItem = ({ skill, index, x }) => {
+const SkillItem = ({ skill, index, x, config, totalArc }) => {
     const [isHovered, setIsHovered] = useState(false);
     const styles = categoryStyles[skill.category] || categoryStyles["Tools"];
 
     // Posição base do item no arco (em pixels de comprimento de arco)
-    const baseOffset = index * GAP_ARC;
+    const baseOffset = index * config.gapArc;
 
     // Transformação: Calcula a posição linear "virtual" (distância percorrida no perímetro)
     const rawPosition = useTransform(x, (currentX) => {
         const raw = baseOffset + currentX;
         // Wrapper infinito usando o comprimento total do arco
-        const wrapped = ((raw + (TOTAL_ARC / 2)) % TOTAL_ARC + TOTAL_ARC) % TOTAL_ARC - (TOTAL_ARC / 2);
+        const wrapped = ((raw + (totalArc / 2)) % totalArc + totalArc) % totalArc - (totalArc / 2);
         return wrapped;
     });
 
     // Posição Real X na tela (Projeção do Círculo)
     // Se estivéssemos olhando de frente para um anel girando: x = R * sin(theta)
     const xPos = useTransform(rawPosition, (pos) => {
-        const theta = pos / RADIUS; // Converte arco para ângulo (u = r * theta => theta = u / r)
-        return RADIUS * Math.sin(theta);
+        const theta = pos / config.radius; // Converte arco para ângulo (u = r * theta => theta = u / r)
+        return config.radius * Math.sin(theta);
     });
 
     // Posição Real Y na tela (Curvatura)
     // y = -R * (1 - cos(theta)) para fazer a "barriga"
     const yPos = useTransform(rawPosition, (pos) => {
-        const theta = pos / RADIUS;
+        const theta = pos / config.radius;
         // Ajuste fino: Se o ângulo for muito grande (> 90 graus), o cos fica negativo e o item "caí".
         // O design pede apenas um arco suave inferior.
-        return -1 * RADIUS * (1 - Math.cos(theta));
+        return -1 * config.radius * (1 - Math.cos(theta));
     });
 
     // Rotação: Acompanha o ângulo do arco
     const rotate = useTransform(rawPosition, (pos) => {
-        const theta = pos / RADIUS;
+        const theta = pos / config.radius;
         return theta * (180 / Math.PI);
     });
 
@@ -83,7 +89,7 @@ const SkillItem = ({ skill, index, x }) => {
 
     const scale = useTransform(dist, (d) => {
         // Escala diminui conforme se afasta do centro
-        const s = 1 - (d / (TOTAL_ARC / 2));
+        const s = 1 - (d / (totalArc / 2));
         return Math.max(s, 0.6);
     });
 
@@ -92,7 +98,7 @@ const SkillItem = ({ skill, index, x }) => {
     // Opacidade para desaparecer suavemente se "der a volta" atrás (opcional, mas bom pra 3D)
     // Como estamos num arco frontal, apenas diminuímos nas bordas extremas
     const opacity = useTransform(dist, d => {
-        const limit = TOTAL_ARC / 3; // Começa a sumir a partir de 1/3 do caminho
+        const limit = totalArc / 3; // Começa a sumir a partir de 1/3 do caminho
         if (d < limit) return 1;
         const op = 1 - ((d - limit) / 500);
         return Math.max(op, 0);
@@ -101,6 +107,10 @@ const SkillItem = ({ skill, index, x }) => {
     return (
         <motion.div
             style={{
+                width: config.itemSize,
+                height: config.itemSize,
+                marginTop: -config.itemSize / 2,
+                marginLeft: -config.itemSize / 2,
                 x: xPos,
                 y: yPos,
                 scale: isHovered ? 1.3 : scale,
@@ -109,8 +119,7 @@ const SkillItem = ({ skill, index, x }) => {
                 opacity
             }}
             className={`
-        absolute top-1/2 -mt-[60px] -ml-[60px] 
-        w-[120px] h-[120px]
+        absolute top-1/2 left-1/2
         flex items-center justify-center
         rounded-full
         backdrop-blur-md
@@ -120,19 +129,19 @@ const SkillItem = ({ skill, index, x }) => {
         cursor-grab active:cursor-grabbing
         group
         transition-colors duration-300
-        left-[50%] 
       `}
+
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
         >
             <div className={`absolute inset-0 rounded-full opacity-20 bg-${styles.color}-500 blur-lg group-hover:opacity-40 transition-opacity`} />
 
-            <div className="relative z-10 w-16 h-16 p-2">
+            <div className="relative z-10 w-[60%] h-[60%] p-1">
                 {skill.icon ? (
                     <img src={skill.icon} alt={skill.name} className="w-full h-full object-contain drop-shadow-lg" draggable={false} />
                 ) : (
                     <div className="flex items-center justify-center h-full">
-                        <span className="text-white font-bold text-xs text-center leading-tight">{skill.name}</span>
+                        <span className="text-white font-bold text-[0.6rem] md:text-xs text-center leading-tight">{skill.name}</span>
                     </div>
                 )}
             </div>
@@ -153,6 +162,12 @@ const SkillItem = ({ skill, index, x }) => {
 export default function Skills() {
     const x = useMotionValue(0);
     const { t } = useLanguage();
+    const { width } = useWindowSize();
+
+    // Determine config based on width directly in render
+    const isMobile = width < 768;
+    const config = isMobile ? MOBILE_CONFIG : DESKTOP_CONFIG;
+    const totalArc = skills.length * config.gapArc;
 
     const categoryLabels = {
         "Languages": t.skills.categories.languages,
@@ -166,7 +181,7 @@ export default function Skills() {
         <section className="relative h-[100vh] w-full flex flex-col items-center justify-start overflow-hidden z-0 pt-20">
 
             <div className="z-10 text-center pointer-events-none mb-10">
-                <h2 className="text-5xl font-bold text-white tracking-tight drop-shadow-xl">{t.skills.title}</h2>
+                <h2 className="text-5xl font-bold text-b tracking-tight drop-shadow-xl">{t.skills.title}</h2>
                 <div className="w-12 h-1 bg-cyan-500 mx-auto mt-4 rounded-full shadow-[0_0_10px_cyan]" />
             </div>
 
@@ -183,6 +198,8 @@ export default function Skills() {
                             skill={skill}
                             index={index}
                             x={x}
+                            config={config}
+                            totalArc={totalArc}
                         />
                     ))}
                 </div>
