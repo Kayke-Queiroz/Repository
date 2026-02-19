@@ -192,7 +192,10 @@ export default function Skills() {
             <div className="absolute bottom-10 flex flex-wrap justify-center gap-6 z-20 px-4">
                 {Object.entries(categoryStyles).map(([category, style]) => (
                     <div key={category} className="flex items-center gap-2 bg-black/30 px-3 py-1.5 rounded-full border border-white/10 backdrop-blur-sm">
-                        <div className={`w-3 h-3 rounded-full bg-${style.color}-500 shadow-[0_0_8px_${style.color}]`} />
+                        <div
+                            className={`w-3 h-3 rounded-full bg-${style.color}-500`}
+                            style={{ boxShadow: `0 0 8px ${style.color}` }}
+                        />
                         <span className={`text-xs font-medium text-${style.color}-300 uppercase tracking-wider`}>
                             {categoryLabels[category] || category}
                         </span>
