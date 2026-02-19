@@ -34,6 +34,14 @@ const Frames = () => {
 
       const imageUrls = sortedPaths.map((path) => frameModules[path].default);
 
+      // A. Carregar PRIMEIRO frame imediatamente para não deixar tela preta
+      const firstImage = new Image();
+      firstImage.src = imageUrls[0];
+      firstImage.onload = () => {
+        setFrames([firstImage]); // Mostra o primeiro frame
+      };
+
+      // B. Carregar todos (incluindo o primeiro novamente, não tem problema, cache resolve) em background
       const BATCH_SIZE = 10;
       const loaded = new Array(imageUrls.length);
 
@@ -56,7 +64,7 @@ const Frames = () => {
       }
 
       const validImages = loaded.filter(Boolean);
-      setFrames(validImages);
+      setFrames(validImages); // Substitui o frame inicial pelo array completo quando pronto
       setImagesLoaded(true);
     };
 
@@ -205,11 +213,7 @@ const Frames = () => {
           ref={canvasRef}
           className="w-full h-full block"
         />
-        {!imagesLoaded && (
-          <div className="absolute inset-0 flex items-center justify-center text-white text-xl">
-            {t.frames.loading || "Loading..."}
-          </div>
-        )}
+        {/* Loading text removed as per request (first frame is shown instead) */}
       </div>
 
       {/* ===============================

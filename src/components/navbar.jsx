@@ -22,14 +22,14 @@ const Navbar = () => {
         className="
           max-w-[1600px] mx-auto
           flex items-center justify-between
-          px-8 h-14
+          px-6 h-12
         "
       >
         {/* Logo (Left) */}
         <Link
           to="/"
           className="
-            text-2xl font-bold tracking-widest text-cyan-400
+            text-xl font-bold tracking-widest text-cyan-400
             drop-shadow-[0_0_10px_rgba(34,211,238,0.5)]
             uppercase
             hover:text-cyan-300 transition-colors cursor-pointer
@@ -39,9 +39,9 @@ const Navbar = () => {
         </Link>
 
         {/* Right Side: Links + Icon */}
-        <div className="flex items-center gap-8">
+        <div className="flex items-center gap-6">
           {/* Internal Links */}
-          <ul className="flex gap-8 text-lg font-medium text-gray-300">
+          <ul className="flex gap-6 text-base font-medium text-gray-300">
             {navItems.map((item) => (
               <li key={item.key} className="relative group">
                 {item.key === 'curriculum' ? (
