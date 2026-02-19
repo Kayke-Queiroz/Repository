@@ -15,43 +15,45 @@ export default function HeroMessages() {
         <div
             className={`
         fixed inset-0 z-hero pointer-events-none
-        flex items-center justify-between px-6 md:px-20 pb-20
+        flex flex-col justify-end px-6 md:px-20 pb-32
         transition-all duration-1000 ease-out
-        ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-10"}
+        ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}
 `}
         >
-            {/* Left Message */}
-            <div
-                className={`
-          flex flex-col gap-2 max-w-md text-left
-          transition-all duration-1000 delay-100
-          ${isVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-20"}
-`}
-            >
-                <h2 className="text-3xl md:text-5xl font-bold text-white leading-tight drop-shadow-[0_0_15px_rgba(34,211,238,0.5)]">
-                    {t.heroMessages.left.transforming}<br />
-                    <span className="text-cyan-400">{t.heroMessages.left.ideas}</span>
-                </h2>
-                <p className="text-xl md:text-2xl text-gray-300 font-light tracking-wide">
-                    {t.heroMessages.left.into}
-                </p>
-            </div>
+            <div className="w-full flex justify-between items-start">
+                {/* Left Message */}
+                <div
+                    className={`
+            flex flex-col gap-2 max-w-md text-left
+            transition-all duration-1000 delay-100
+            ${isVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-20"}
+    `}
+                >
+                    <h2 className="text-2xl md:text-5xl font-bold text-white leading-tight drop-shadow-[0_4px_8px_rgba(0,0,0,0.8)]">
+                        {t.heroMessages.left.transforming}<br />
+                        <span className="text-cyan-400 drop-shadow-[0_0_10px_rgba(34,211,238,0.3)]">{t.heroMessages.left.ideas}</span>
+                    </h2>
+                    <p className="text-lg md:text-2xl text-cyan-50 font-light tracking-wide drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+                        {t.heroMessages.left.into}
+                    </p>
+                </div>
 
-            {/* Right Message */}
-            <div
-                className={`
-          flex flex-col gap-2 max-w-md text-right
-          transition-all duration-1000 delay-300
-          ${isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-20"}
-`}
-            >
-                <h2 className="text-3xl md:text-5xl font-bold text-white leading-tight drop-shadow-[0_0_15px_rgba(34,211,238,0.5)]">
-                    {t.heroMessages.right.from}<br />
-                    <span className="text-cyan-400">{t.heroMessages.right.to}</span>
-                </h2>
-                <p className="text-xl md:text-2xl text-gray-300 font-light tracking-wide">
-                    {t.heroMessages.right.real}
-                </p>
+                {/* Right Message */}
+                <div
+                    className={`
+            flex flex-col gap-2 max-w-md text-right
+            transition-all duration-1000 delay-300
+            ${isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-20"}
+    `}
+                >
+                    <h2 className="text-2xl md:text-5xl font-bold text-white leading-tight drop-shadow-[0_4px_8px_rgba(0,0,0,0.8)]">
+                        {t.heroMessages.right.from}<br />
+                        <span className="text-cyan-400 drop-shadow-[0_0_15px_rgba(34,211,238,0.5)]">{t.heroMessages.right.to}</span>
+                    </h2>
+                    <p className="text-lg md:text-2xl text-cyan-50 font-light tracking-wide drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+                        {t.heroMessages.right.real}
+                    </p>
+                </div>
             </div>
         </div>
     );

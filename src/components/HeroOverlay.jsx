@@ -16,11 +16,11 @@ export default function HeroOverlay() {
           : "opacity-100 translate-y-0"}
       `}
     >
-      <div className="max-w-[1600px] mx-auto px-6 md:px-16 w-full flex justify-between items-center">
+      <div className="max-w-[1600px] mx-auto px-6 md:px-16 w-full flex flex-col-reverse md:flex-row justify-center md:justify-between items-center gap-12 md:gap-0 mt-20 md:mt-0">
 
         {/* Left Content */}
-        <div className="max-w-2xl space-y-6">
-          <h1 className="text-5xl md:text-6xl font-bold text-white tracking-tight">
+        <div className="max-w-2xl space-y-4 md:space-y-6 text-center md:text-left">
+          <h1 className="text-4xl md:text-6xl font-bold text-white tracking-tight">
             {t.hero.title}
           </h1>
 
@@ -28,11 +28,11 @@ export default function HeroOverlay() {
             {t.hero.role}
           </p>
 
-          <p className="text-gray-400 text-base leading-relaxed max-w-lg">
+          <p className="text-gray-400 text-sm md:text-base leading-relaxed max-w-lg mx-auto md:mx-0">
             {t.hero.description}
           </p>
 
-          <div className="flex gap-4 pt-4">
+          <div className="flex justify-center md:justify-start gap-4 pt-4">
             <button className="px-6 py-2.5 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-semibold shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40 transition-all hover:scale-105 cursor-pointer text-sm md:text-base">
               {t.hero.viewProjects}
             </button>
@@ -49,7 +49,7 @@ export default function HeroOverlay() {
           <div className="absolute -inset-px bg-gradient-to-b from-cyan-400 to-blue-600 rounded-[2rem] opacity-80 blur-md group-hover:opacity-100 transition duration-500"></div>
 
           {/* Image Container */}
-          <div className="relative w-72 h-[450px] rounded-[2rem] bg-gray-900 border border-white/10 overflow-hidden shadow-2xl flex items-center justify-center">
+          <div className="relative w-64 h-[400px] md:w-72 md:h-[450px] rounded-[2rem] bg-gray-900 border border-white/10 overflow-hidden shadow-2xl flex items-center justify-center">
             {/* Placeholder for actual image */}
             <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/60 z-10"></div>
             <img
