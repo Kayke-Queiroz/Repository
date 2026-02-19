@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 
 const SCROLL_HEIGHT_MULTIPLIER = 2; // 200vh
@@ -7,38 +7,60 @@ const STICKY_EXTRA_RANGE = 0.005; // 0.5% a mais depois do 99%
 const RESET_BELOW = 0.8; // se voltar muito, reseta o "travamento" final
 
 const Frames = () => {
-  const [currentFrame, setCurrentFrame] = useState(0);
+  const canvasRef = useRef(null);
   const [frames, setFrames] = useState([]);
   const [scrollPercent, setScrollPercent] = useState(0);
   const [hasReachedEnd, setHasReachedEnd] = useState(false);
   const [isScrollLocked, setIsScrollLocked] = useState(false);
   const [lockScrollY, setLockScrollY] = useState(0);
+  const [imagesLoaded, setImagesLoaded] = useState(false);
   const { t } = useLanguage();
 
-  const totalFramesFallback = 168;
-
   // ===============================
-  // IMPORTAÇÃO DOS FRAMES
+  // CARREGAMENTO DAS IMAGENS (BATCHED)
   // ===============================
   useEffect(() => {
-    const importFrames = async () => {
+    const loadImages = async () => {
       const frameModules = import.meta.glob(
         '../assets/videos/frames/*.jpg',
         { eager: true }
       );
 
-      const sortedFrames = Object.keys(frameModules)
-        .sort((a, b) => {
-          const numA = parseInt(a.match(/\d+/)?.[0] || 0, 10);
-          const numB = parseInt(b.match(/\d+/)?.[0] || 0, 10);
-          return numA - numB;
-        })
-        .map((path) => frameModules[path].default);
+      const sortedPaths = Object.keys(frameModules).sort((a, b) => {
+        const numA = parseInt(a.match(/\d+/)?.[0] || 0, 10);
+        const numB = parseInt(b.match(/\d+/)?.[0] || 0, 10);
+        return numA - numB;
+      });
 
-      setFrames(sortedFrames);
+      const imageUrls = sortedPaths.map((path) => frameModules[path].default);
+
+      const BATCH_SIZE = 10;
+      const loaded = new Array(imageUrls.length);
+
+      const loadImage = (url) => new Promise((resolve) => {
+        const img = new Image();
+        img.src = url;
+        img.onload = () => resolve(img);
+        img.onerror = () => resolve(null);
+      });
+
+      for (let i = 0; i < imageUrls.length; i += BATCH_SIZE) {
+        const batch = imageUrls.slice(i, i + BATCH_SIZE);
+        const batchResults = await Promise.all(batch.map(loadImage));
+
+        batchResults.forEach((img, idx) => {
+          if (img) loaded[i + idx] = img;
+        });
+
+        await new Promise(resolve => setTimeout(resolve, 10));
+      }
+
+      const validImages = loaded.filter(Boolean);
+      setFrames(validImages);
+      setImagesLoaded(true);
     };
 
-    importFrames();
+    loadImages();
   }, []);
 
   // ===============================
@@ -102,15 +124,6 @@ const Frames = () => {
       }
 
       setScrollPercent(effectivePercent);
-
-      if (!frames.length) return;
-
-      const frameIndex =
-        effectivePercent >= END_THRESHOLD
-          ? frames.length - 1
-          : Math.floor(effectivePercent * (frames.length - 1));
-
-      setCurrentFrame(frameIndex);
     };
 
     const onScroll = () => {
@@ -125,7 +138,55 @@ const Frames = () => {
 
     window.addEventListener('scroll', onScroll);
     return () => window.removeEventListener('scroll', onScroll);
-  }, [frames, hasReachedEnd, isScrollLocked, lockScrollY]);
+  }, [hasReachedEnd, isScrollLocked, lockScrollY]);
+
+  // ===============================
+  // CANVAS RENDERER
+  // ===============================
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas || frames.length === 0) return;
+
+    const ctx = canvas.getContext('2d');
+
+    // Calcular índice do frame basedo no scrollPercent
+    const frameIndex = scrollPercent >= END_THRESHOLD
+      ? frames.length - 1
+      : Math.floor(scrollPercent * (frames.length - 1));
+
+    const img = frames[frameIndex];
+
+    if (img) {
+      // Ajuste de "Cover" no Canvas
+      const cw = canvas.width;
+      const ch = canvas.height;
+      const iw = img.width;
+      const ih = img.height;
+
+      const ratio = Math.max(cw / iw, ch / ih);
+      const nw = iw * ratio;
+      const nh = ih * ratio;
+      const cx = (cw - nw) / 2;
+      const cy = (ch - nh) / 2;
+
+      ctx.clearRect(0, 0, cw, ch);
+      ctx.drawImage(img, cx, cy, nw, nh);
+    }
+  }, [frames, scrollPercent, canvasRef]);
+
+  // Resize handler for canvas
+  useEffect(() => {
+    const handleResize = () => {
+      if (canvasRef.current) {
+        canvasRef.current.width = window.innerWidth;
+        canvasRef.current.height = window.innerHeight;
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    handleResize(); // Set initial size
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
 
   const stickyEnd = END_THRESHOLD + STICKY_EXTRA_RANGE;
   const isEnd = hasReachedEnd && scrollPercent >= stickyEnd && !isScrollLocked;
@@ -136,18 +197,18 @@ const Frames = () => {
           FRAME FIXO (ANIMAÇÃO)
       =============================== */}
       <div
-        className={`fixed top-0 left-0 w-full h-[100dvh] bg-black flex items-center justify-center transition-opacity duration-300 z-overlay
+        className={`fixed top-0 left-0 w-full h-[100dvh] bg-black transition-opacity duration-300 z-overlay
           ${isEnd ? 'opacity-0 pointer-events-none' : 'opacity-100'}
         `}
       >
-        {frames.length > 0 ? (
-          <img
-            src={frames[currentFrame]}
-            alt={`Frame ${currentFrame + 1}`}
-            className="w-full h-full object-cover object-center"
-          />
-        ) : (
-          <div className="text-white text-xl">{t.frames.loading}</div>
+        <canvas
+          ref={canvasRef}
+          className="w-full h-full block"
+        />
+        {!imagesLoaded && (
+          <div className="absolute inset-0 flex items-center justify-center text-white text-xl">
+            {t.frames.loading || "Loading..."}
+          </div>
         )}
       </div>
 
@@ -155,15 +216,8 @@ const Frames = () => {
           SCROLL / PLACEHOLDER
       =============================== */}
       <div style={{ height: '200vh' }}>
-        {/* Último frame entra no fluxo */}
+        {/* Último frame "congelado" via canvas se precisar, ou apenas espaço vazio */}
         <div className="h-[100dvh] w-full">
-          {isEnd && frames.length > 0 && (
-            <img
-              src={frames[frames.length - 1]}
-              alt="Frame final"
-              className="w-full h-full object-cover object-center"
-            />
-          )}
         </div>
 
         {/* ===============================
@@ -174,8 +228,8 @@ const Frames = () => {
       {/* ===============================
           INDICADOR (OPCIONAL)
       =============================== */}
-      <div className="fixed bottom-4 right-4 bg-black/60 px-4 py-2 rounded text-white text-sm z-hud">
-        {currentFrame + 1} / {frames.length || totalFramesFallback}
+      <div className="fixed bottom-4 right-4 bg-black/60 px-4 py-2 rounded text-white text-sm z-hud pointer-events-none">
+        {Math.floor(scrollPercent * (frames.length || 0)) + 1} / {frames.length}
       </div>
     </>
   );

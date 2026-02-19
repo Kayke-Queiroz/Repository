@@ -20,7 +20,7 @@ export default function HeroOverlay() {
 
         {/* Left Content */}
         <div className="max-w-2xl space-y-6">
-          <h1 className="text-5xl md:text-6xl font-bold text-white tracking-tight">
+          <h1 className="text-5xl md:text-6xl font-bold text-red-500 tracking-tight">
             {t.hero.title}
           </h1>
 
