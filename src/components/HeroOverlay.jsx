@@ -20,24 +20,24 @@ export default function HeroOverlay() {
 
         {/* Left Content */}
         <div className="max-w-2xl space-y-6">
-          <h1 className="text-6xl md:text-7xl font-bold text-white tracking-tight">
+          <h1 className="text-5xl md:text-6xl font-bold text-white tracking-tight">
             {t.hero.title}
           </h1>
 
-          <p className="text-xl md:text-2xl text-cyan-400 font-medium">
+          <p className="text-lg md:text-xl text-cyan-400 font-medium">
             {t.hero.role}
           </p>
 
-          <p className="text-gray-400 text-lg leading-relaxed max-w-lg">
+          <p className="text-gray-400 text-base leading-relaxed max-w-lg">
             {t.hero.description}
           </p>
 
           <div className="flex gap-4 pt-4">
-            <button className="px-8 py-3 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-semibold shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40 transition-all hover:scale-105 cursor-pointer">
+            <button className="px-6 py-2.5 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-semibold shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40 transition-all hover:scale-105 cursor-pointer text-sm md:text-base">
               {t.hero.viewProjects}
             </button>
 
-            <button className="px-8 py-3 rounded-lg border border-white/20 hover:border-white/40 text-white font-semibold backdrop-blur-sm transition-all hover:bg-white/5 cursor-pointer">
+            <button className="px-6 py-2.5 rounded-lg border border-white/20 hover:border-white/40 text-white font-semibold backdrop-blur-sm transition-all hover:bg-white/5 cursor-pointer text-sm md:text-base">
               {t.hero.contactMe}
             </button>
           </div>
