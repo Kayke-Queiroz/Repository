@@ -9,10 +9,10 @@ const JourneyCard = ({ data, index }) => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.6, delay: index * 0.2 }}
-            className="relative flex flex-row items-center justify-between w-full mb-24"
+            className="relative flex flex-col md:flex-row items-center justify-between w-full mb-12 md:mb-24"
         >
             {/* Lado Esquerdo (Texto ou Vazio) */}
-            <div className="w-5/12 text-right pr-8">
+            <div className={`w-full md:w-5/12 pl-12 md:pl-0 pr-4 md:pr-8 text-left md:text-right ${index % 2 !== 0 ? 'hidden md:block' : ''}`}>
                 {index % 2 === 0 && (
                     <div className="bg-black/40 backdrop-blur-md border border-white/10 p-6 rounded-2xl hover:border-cyan-500/50 hover:shadow-[0_0_30px_rgba(34,211,238,0.1)] transition-all duration-300 group relative overflow-hidden">
                         <div className="absolute top-0 right-0 w-20 h-20 bg-cyan-500/10 rounded-bl-full -mr-10 -mt-10 blur-xl group-hover:bg-cyan-500/20 transition-colors" />
@@ -35,13 +35,13 @@ const JourneyCard = ({ data, index }) => {
             </div>
 
             {/* Nó Central (Conexão) */}
-            <div className="absolute left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-cyan-500 shadow-[0_0_15px_cyan] z-20 flex items-center justify-center">
+            <div className="absolute left-6 md:left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-cyan-500 shadow-[0_0_15px_cyan] z-20 flex items-center justify-center top-0 md:top-auto">
                 <div className="w-full h-full bg-white rounded-full animate-ping opacity-30" />
                 <div className="absolute w-8 h-8 border border-cyan-500/30 rounded-full animate-spin-slow" />
             </div>
 
             {/* Lado Direito (Texto ou Vazio) */}
-            <div className="w-5/12 text-left pl-8">
+            <div className={`w-full md:w-5/12 pl-12 md:pl-8 pr-4 md:pr-0 mt-8 md:mt-0 ${index % 2 === 0 ? 'hidden md:block' : ''}`}>
                 {index % 2 !== 0 && (
                     <div className="bg-black/40 backdrop-blur-md border border-white/10 p-6 rounded-2xl hover:border-cyan-500/50 hover:shadow-[0_0_30px_rgba(34,211,238,0.1)] transition-all duration-300 group relative overflow-hidden">
                         <div className="absolute top-0 left-0 w-20 h-20 bg-cyan-500/10 rounded-br-full -ml-10 -mt-10 blur-xl group-hover:bg-cyan-500/20 transition-colors" />
@@ -109,7 +109,7 @@ export default function Journey() {
             <div className="max-w-[1000px] mx-auto px-4 relative" ref={containerRef}>
 
                 {/* Linha Central (Trilho Background) */}
-                <div className="absolute left-1/2 top-0 bottom-0 w-[2px] bg-white/5 -translate-x-1/2 rounded-full overflow-hidden h-full z-0">
+                <div className="absolute left-6 md:left-1/2 top-0 bottom-0 w-[2px] bg-white/5 -translate-x-1/2 rounded-full overflow-hidden h-full z-0">
                     {/* Linha de Progresso (Foreground) */}
                     <motion.div
                         style={{ scaleY, transformOrigin: "top" }}

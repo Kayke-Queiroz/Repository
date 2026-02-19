@@ -15,7 +15,7 @@ export default function HeroMessages() {
         <div
             className={`
         fixed inset-0 z-hero pointer-events-none
-        flex flex-col justify-end px-6 md:px-20 pb-32
+        flex flex-col justify-end md:justify-center px-6 md:px-20 pb-32 md:pb-0
         transition-all duration-1000 ease-out
         ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}
 `}
