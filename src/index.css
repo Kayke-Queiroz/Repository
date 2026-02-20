@@ -43,8 +43,10 @@
   body,
   #root {
     min-height: 100dvh;
-    background-color: #000; /* Fallback to prevent white gaps */
+    background-color: #000;
+    /* Fallback to prevent white gaps */
     font-size: 16px;
+    scroll-behavior: smooth;
     /* Forçar tamanho base para evitar zoom indesejado */
   }
 

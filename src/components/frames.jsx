@@ -41,6 +41,10 @@ const Frames = () => {
         setFrames([firstImage]); // Mostra o primeiro frame
       };
 
+      // Deferir o carregamento em massa do resto do vídeo por 0.8s
+      // para não travar o carregamento dos painéis e imagens secundárias
+      await new Promise(resolve => setTimeout(resolve, 800));
+
       // B. Carregar todos (incluindo o primeiro novamente, não tem problema, cache resolve) em background
       const BATCH_SIZE = 10;
       const loaded = new Array(imageUrls.length);
@@ -72,80 +76,91 @@ const Frames = () => {
   }, []);
 
   // ===============================
-  // SCROLL CONTROLLER
+  // NATIVE SCROLL CONTROLLER
   // ===============================
   useEffect(() => {
     let ticking = false;
 
-    const handleScroll = () => {
-      const totalScrollHeight = SCROLL_HEIGHT_MULTIPLIER * window.innerHeight;
-      const scrollTop = window.scrollY;
-
-      // enquanto estiver travado, mantém a posição e não atualiza animação
-      if (isScrollLocked) {
-        window.scrollTo(0, lockScrollY);
-        return;
-      }
-
-      const rawPercent = Math.min(1, scrollTop / totalScrollHeight);
-
-      // estado anterior: usamos para saber se já estávamos "travados" no fim
-      const wasAtEnd = hasReachedEnd;
-      let nextHasReachedEnd = hasReachedEnd;
-
-      // se o usuário voltar bastante, libera para repetir a animação
-      if (nextHasReachedEnd && rawPercent < RESET_BELOW) {
-        nextHasReachedEnd = false;
-      }
-
-      // se ainda não tinha chegado no fim e agora passou do threshold, arma o "travamento"
-      const becomingEndNow =
-        !nextHasReachedEnd && rawPercent >= END_THRESHOLD;
-
-      if (becomingEndNow) {
-        nextHasReachedEnd = true;
-        // trava o scroll por ~1s na posição atual, mas sem esconder a barra
-        setIsScrollLocked(true);
-        setLockScrollY(scrollTop);
-        setTimeout(() => {
-          setIsScrollLocked(false);
-        }, 1000);
-      }
-
-      setHasReachedEnd(nextHasReachedEnd);
-
-      const stickyEnd = END_THRESHOLD + STICKY_EXTRA_RANGE;
-      // só podemos "sair" depois de já ter travado antes (wasAtEnd)
-      const canFinish = wasAtEnd && rawPercent >= stickyEnd;
-
-      let effectivePercent;
-
-      if (!nextHasReachedEnd) {
-        // ainda na animação normal
-        effectivePercent = rawPercent;
-      } else if (!canFinish) {
-        // chegou no fim, mas ainda não liberou para sair -> trava no último frame
-        effectivePercent = END_THRESHOLD;
-      } else {
-        // já estava travado e o usuário continuou descendo -> libera para sair
-        effectivePercent = rawPercent;
-      }
-
-      setScrollPercent(effectivePercent);
-    };
-
     const onScroll = () => {
       if (!ticking) {
-        ticking = true;
         requestAnimationFrame(() => {
-          handleScroll();
+          const totalScrollHeight = SCROLL_HEIGHT_MULTIPLIER * window.innerHeight;
+          const scrollTop = window.scrollY;
+
+          // enquanto estiver travado, mantém a posição e não atualiza animação
+          if (isScrollLocked) {
+            window.scrollTo({ top: lockScrollY, behavior: 'instant' });
+            ticking = false;
+            return;
+          }
+
+          const rawPercent = Math.min(1, Math.max(0, scrollTop / totalScrollHeight));
+
+          const wasAtEnd = hasReachedEnd;
+          let nextHasReachedEnd = hasReachedEnd;
+
+          // se o usuário voltar bastante, libera para repetir a animação
+          if (nextHasReachedEnd && rawPercent < RESET_BELOW) {
+            nextHasReachedEnd = false;
+          }
+
+          // se ainda não tinha chegado no fim e agora passou do threshold, arma o "travamento"
+          const becomingEndNow = !nextHasReachedEnd && rawPercent >= END_THRESHOLD;
+
+          if (becomingEndNow) {
+            nextHasReachedEnd = true;
+
+            // Verifica se o usuário clicou num link do Navbar para pular a animação
+            const isBypassing = sessionStorage.getItem('skipFramesLock') === 'true';
+
+            if (isBypassing) {
+              sessionStorage.removeItem('skipFramesLock');
+            } else {
+              // trava o scroll por ~1s na posição atual normalmente
+              setIsScrollLocked(true);
+              setLockScrollY(scrollTop);
+              setTimeout(() => {
+                setIsScrollLocked(false);
+              }, 1000);
+            }
+          }
+
+          if (nextHasReachedEnd !== hasReachedEnd) {
+            setHasReachedEnd(nextHasReachedEnd);
+          }
+
+          const stickyEnd = END_THRESHOLD + STICKY_EXTRA_RANGE;
+          // só podemos "sair" depois de já ter travado antes (wasAtEnd)
+          const canFinish = wasAtEnd && rawPercent >= stickyEnd;
+
+          let effectivePercent;
+
+          if (!nextHasReachedEnd) {
+            // ainda na animação normal
+            effectivePercent = rawPercent;
+          } else if (!canFinish) {
+            // chegou no fim, mas ainda não liberou para sair -> trava no último frame
+            effectivePercent = END_THRESHOLD;
+          } else {
+            // já estava travado e o usuário continuou descendo -> libera para sair
+            effectivePercent = rawPercent;
+          }
+
+          setScrollPercent(effectivePercent);
           ticking = false;
         });
+        ticking = true;
       }
     };
 
-    window.addEventListener('scroll', onScroll);
-    return () => window.removeEventListener('scroll', onScroll);
+    window.addEventListener('scroll', onScroll, { passive: true });
+
+    // Trigger on mount and resize
+    onScroll();
+
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+    };
   }, [hasReachedEnd, isScrollLocked, lockScrollY]);
 
   // ===============================
@@ -157,7 +172,6 @@ const Frames = () => {
 
     const ctx = canvas.getContext('2d');
 
-    // Calcular índice do frame basedo no scrollPercent
     const frameIndex = scrollPercent >= END_THRESHOLD
       ? frames.length - 1
       : Math.floor(scrollPercent * (frames.length - 1));
@@ -165,7 +179,6 @@ const Frames = () => {
     const img = frames[frameIndex];
 
     if (img) {
-      // Ajuste de "Cover" no Canvas
       const cw = canvas.width;
       const ch = canvas.height;
       const iw = img.width;
@@ -180,7 +193,7 @@ const Frames = () => {
       ctx.clearRect(0, 0, cw, ch);
       ctx.drawImage(img, cx, cy, nw, nh);
     }
-  }, [frames, scrollPercent, canvasRef]);
+  }, [frames, scrollPercent]);
 
   // Resize handler for canvas
   useEffect(() => {
@@ -191,7 +204,7 @@ const Frames = () => {
       }
     };
     window.addEventListener('resize', handleResize);
-    handleResize(); // Set initial size
+    handleResize();
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
@@ -207,6 +220,7 @@ const Frames = () => {
       <div
         className={`fixed top-0 left-0 w-full h-[100dvh] bg-black transition-opacity duration-300 z-overlay
           ${isEnd ? 'opacity-0 pointer-events-none' : 'opacity-100'}
+          ${scrollPercent === 0 ? 'pointer-events-none' : ''}
         `}
       >
         <canvas

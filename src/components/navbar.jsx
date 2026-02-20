@@ -8,8 +8,8 @@ const Navbar = () => {
 
   const navItems = [
     { key: 'curriculum', label: t.navbar.curriculum, path: '/curriculo' },
-    { key: 'projects', label: t.navbar.projects, path: '#projetos' },
-    { key: 'contact', label: t.navbar.contact, path: '#contato' },
+    { key: 'projects', label: t.navbar.projects, path: '/#projetos' },
+    { key: 'contact', label: t.navbar.contact, path: '/#contato' },
   ];
 
   const closeMenu = () => setIsMenuOpen(false);
@@ -60,6 +60,7 @@ const Navbar = () => {
                 ) : (
                   <a
                     href={item.path}
+                    onClick={() => sessionStorage.setItem('skipFramesLock', 'true')}
                     className="transition-colors duration-300 group-hover:text-cyan-400"
                   >
                     {item.label}
@@ -162,7 +163,10 @@ const Navbar = () => {
                   <a
                     href={item.path}
                     className="block py-2 text-lg font-medium text-gray-300 hover:text-cyan-400 hover:bg-white/5 transition-all"
-                    onClick={closeMenu}
+                    onClick={() => {
+                      sessionStorage.setItem('skipFramesLock', 'true');
+                      closeMenu();
+                    }}
                   >
                     {item.label}
                   </a>
