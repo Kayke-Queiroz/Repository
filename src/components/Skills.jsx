@@ -190,6 +190,11 @@ export default function Skills() {
                 </div>
             </div>
 
+            {/* Barra de Controle Inferior (Touchpad de Giro) */}
+            <div className="z-30 w-full flex justify-center mt-[-40px] mb-8">
+                <PanBar x={x} />
+            </div>
+
             {/* Legenda de Categorias */}
             <div className="absolute bottom-10 flex flex-wrap justify-center gap-6 z-20 px-4">
                 {Object.entries(categoryStyles).map(([category, style]) => (
@@ -208,3 +213,24 @@ export default function Skills() {
         </section>
     );
 }
+
+// Handler visível que captura o gesto de arrastar suave na zona demarcada da barra (Touchpad)
+const PanBar = ({ x }) => {
+    const sensitivity = 2.5; // Gira bastante com menos esforço
+
+    return (
+        <motion.div
+            className="w-[280px] h-14 rounded-full relative bg-white/5 border border-white/10 flex items-center justify-center cursor-grab active:cursor-grabbing hover:bg-white/10 transition-all backdrop-blur-md shadow-[0_0_15px_rgba(0,0,0,0.5)] group z-50 overflow-hidden"
+            onPan={(e, info) => {
+                x.set(x.get() + info.delta.x * sensitivity);
+            }}
+            style={{ touchAction: "none" }}
+        >
+            <div className="absolute inset-x-8 h-[2px] bg-gradient-to-r from-transparent via-cyan-500/30 to-transparent top-1/2 -translate-y-1/2 group-hover:via-cyan-400 group-active:via-cyan-300 transition-colors" />
+            <div className="absolute inset-0 flex items-center justify-between px-6 text-white/40 group-hover:text-cyan-400 transition-colors pointer-events-none">
+                <svg className="w-5 h-5 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" /></svg>
+                <svg className="w-5 h-5 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" /></svg>
+            </div>
+        </motion.div>
+    );
+};
