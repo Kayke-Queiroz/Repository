@@ -1,29 +1,34 @@
 import { useRef, useEffect, useState } from "react";
-import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
+import { motion, useMotionValue, useTransform, animate } from "framer-motion";
 import { useLanguage } from "../context/LanguageContext";
 import { useWindowSize } from "../hooks/useWindowSize";
+
+const wrap = (min, max, v) => {
+    const rangeSize = max - min;
+    return ((((v - min) % rangeSize) + rangeSize) % rangeSize) + min;
+};
 
 // Configuração de dados
 const skills = [
     { name: "JavaScript", category: "Languages", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" },
-    { name: "TypeScript", category: "Languages", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" },
+    { name: "Java", category: "Languages", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original.svg" },
+    { name: "Python", category: "Languages", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg" },
+    { name: "C++", category: "Languages", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cplusplus/cplusplus-original.svg" },
     { name: "HTML", category: "Languages", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" },
     { name: "CSS", category: "Languages", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" },
     { name: "React", category: "Frameworks", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" },
-    { name: "Next.js", category: "Frameworks", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg" },
-    { name: "Tailwind", category: "Frameworks", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg" },
     { name: "Node.js", category: "Frameworks", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" },
-    { name: "Express", category: "Frameworks", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg" },
-    { name: "OpenAI API", category: "AI & Automation", icon: null },
-    { name: "n8n", category: "AI & Automation", icon: null },
-    { name: "AI Agents", category: "AI & Automation", icon: null },
+    { name: "Tailwind", category: "Frameworks", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg" },
+    { name: "Strapi", category: "Frameworks", icon: "https://raw.githubusercontent.com/Kayke-Queiroz/Kayke-Queiroz/main/tech/Strapi.svg" },
+    { name: "OpenAI API", category: "AI & Automation", icon: "https://raw.githubusercontent.com/Kayke-Queiroz/Kayke-Queiroz/main/tech/gpt.svg" },
+    { name: "n8n", category: "AI & Automation", icon: "https://raw.githubusercontent.com/Kayke-Queiroz/Kayke-Queiroz/main/tech/n8n.svg" },
     { name: "Git", category: "Tools", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" },
-    { name: "GitHub", category: "Tools", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" },
+    { name: "GitHub", category: "Tools", icon: "https://raw.githubusercontent.com/Kayke-Queiroz/Kayke-Queiroz/main/tech/githubblack.svg" },
     { name: "Figma", category: "Tools", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg" },
-    { name: "Postman", category: "Tools", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postman/postman-original.svg" },
+    { name: "Windows", category: "Tools", icon: "https://raw.githubusercontent.com/Kayke-Queiroz/Kayke-Queiroz/main/tech/windows.svg" },
     { name: "WordPress", category: "Platforms", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/wordpress/wordpress-original.svg" },
-    { name: "WooCommerce", category: "Platforms", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/woocommerce/woocommerce-original.svg" },
-    { name: "Vercel", category: "Platforms", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vercel/vercel-original.svg" },
+    { name: "FireBase", category: "Platforms", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/firebase/firebase-plain.svg" },
+    { name: "Vercel", category: "Platforms", icon: "https://raw.githubusercontent.com/Kayke-Queiroz/Kayke-Queiroz/main/tech/Vercel.svg" },
 ];
 
 const categoryStyles = {
@@ -57,9 +62,7 @@ const SkillItem = ({ skill, index, x, config, totalArc }) => {
     // Transformação: Calcula a posição linear "virtual" (distância percorrida no perímetro)
     const rawPosition = useTransform(x, (currentX) => {
         const raw = baseOffset + currentX;
-        // Wrapper infinito usando o comprimento total do arco
-        const wrapped = ((raw + (totalArc / 2)) % totalArc + totalArc) % totalArc - (totalArc / 2);
-        return wrapped;
+        return wrap(-totalArc / 2, totalArc / 2, raw);
     });
 
     // Posição Real X na tela (Projeção do Círculo)
@@ -134,8 +137,29 @@ const SkillItem = ({ skill, index, x, config, totalArc }) => {
 
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
+            onPanStart={() => x.stop()}
             onPan={(e, info) => {
-                x.set(x.get() + info.delta.x * 1.5);
+                const delta = info?.delta?.x;
+                if (!isNaN(delta)) {
+                    const newX = x.get() + delta * 1.5;
+                    x.set(wrap(-totalArc / 2, totalArc / 2, newX));
+                }
+            }}
+            onPanEnd={(e, info) => {
+                const velocity = info?.velocity?.x;
+                if (!isNaN(velocity)) {
+                    let clampedVel = velocity;
+                    if (clampedVel > 2000) clampedVel = 2000;
+                    if (clampedVel < -2000) clampedVel = -2000;
+
+                    animate(x, x.get() + (clampedVel * 0.15), {
+                        type: "spring",
+                        stiffness: 50,
+                        damping: 20,
+                        mass: 0.8,
+                        onUpdate: (latest) => x.set(wrap(-totalArc / 2, totalArc / 2, latest))
+                    });
+                }
             }}
         >
             <div className={`absolute inset-0 rounded-full opacity-20 bg-${styles.color}-500 blur-lg group-hover:opacity-40 transition-opacity`} />
@@ -182,7 +206,7 @@ export default function Skills() {
     };
 
     return (
-        <section className="relative h-[100dvh] w-full flex flex-col items-center justify-start overflow-hidden z-0 pt-20">
+        <section id="skills" className="relative h-[100dvh] w-full flex flex-col items-center justify-start overflow-hidden z-0 pt-20">
 
             <div className="z-10 text-center pointer-events-none mb-10">
                 <h2 className="text-5xl font-bold text-b tracking-tight drop-shadow-xl">{t.skills.title}</h2>
@@ -209,7 +233,7 @@ export default function Skills() {
 
             {/* Barra de Controle Inferior (Touchpad de Giro) */}
             <div className="z-30 w-full flex justify-center mt-[-40px] mb-8">
-                <PanBar x={x} />
+                <PanBar x={x} totalArc={totalArc} />
             </div>
 
             {/* Legenda de Categorias */}
@@ -232,14 +256,35 @@ export default function Skills() {
 }
 
 // Handler visível que captura o gesto de arrastar suave na zona demarcada da barra (Touchpad)
-const PanBar = ({ x }) => {
+const PanBar = ({ x, totalArc }) => {
     const sensitivity = 2.5; // Gira bastante com menos esforço
 
     return (
         <motion.div
             className="w-[280px] h-14 rounded-full relative bg-white/5 border border-white/10 flex items-center justify-center cursor-grab active:cursor-grabbing hover:bg-white/10 transition-all backdrop-blur-md shadow-[0_0_15px_rgba(0,0,0,0.5)] group z-50 overflow-hidden"
+            onPanStart={() => x.stop()}
             onPan={(e, info) => {
-                x.set(x.get() + info.delta.x * sensitivity);
+                const delta = info?.delta?.x;
+                if (!isNaN(delta)) {
+                    const newX = x.get() + delta * sensitivity;
+                    x.set(wrap(-totalArc / 2, totalArc / 2, newX)); // Prevent x overflow
+                }
+            }}
+            onPanEnd={(e, info) => {
+                const velocity = info?.velocity?.x;
+                if (!isNaN(velocity)) {
+                    let clampedVel = velocity;
+                    if (clampedVel > 2000) clampedVel = 2000;
+                    if (clampedVel < -2000) clampedVel = -2000;
+
+                    animate(x, x.get() + (clampedVel * 0.2), {
+                        type: "spring",
+                        stiffness: 50,
+                        damping: 20,
+                        mass: 0.8,
+                        onUpdate: (latest) => x.set(wrap(-totalArc / 2, totalArc / 2, latest))
+                    });
+                }
             }}
             style={{ touchAction: "none" }}
         >

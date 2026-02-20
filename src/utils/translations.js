@@ -10,8 +10,8 @@ export const translations = {
             title: "Kayke Santos",
             role: "Desenvolvedor Front-end • Engenheiro de IA • Engenheiro de Automação",
             description: "Construo interfaces de alta performance e sistemas de automação inteligentes que transformam ideias em produtos digitais escaláveis.",
-            viewProjects: "Ver Projetos",
-            contactMe: "Entrar em Contato",
+            viewProjects: "Ver Curriculo",
+            contactMe: "Vamos trabalhar",
             imageAlt: "Kayke Santos"
         },
         heroMessages: {
@@ -33,7 +33,7 @@ export const translations = {
             p1: "Olá! Sou um desenvolvedor apaixonado por criar experiências digitais que unem design futurista e performance extrema.",
             p2: "Minha jornada começou com a curiosidade de entender como as coisas funcionam por trás da tela. Hoje, transformo linhas de código em soluções visuais impactantes e sistemas de automação inteligentes. Quando não estou codando, estou explorando novas tecnologias de IA ou aprimorando meu setup.",
             traits: ["Criativo", "Proativo", "Detalhista"],
-            button: "Conheça minha jornada",
+            button: "Conheça minhas habilidades",
             imageAlt: "Sobre Mim"
         },
         projects: {
@@ -100,7 +100,7 @@ export const translations = {
             ]
         },
         skills: {
-            title: "Tech Stack",
+            title: "Habilidades",
             categories: {
                 languages: "Linguagens",
                 frameworks: "Frameworks",
@@ -148,8 +148,8 @@ export const translations = {
             title: "Kayke Santos",
             role: "Front-end Developer • AI Engineer • Automation Engineer",
             description: "I build high-performance interfaces and intelligent automation systems that transform ideas into scalable digital products.",
-            viewProjects: "View Projects",
-            contactMe: "Contact Me",
+            viewProjects: "View Resume",
+            contactMe: "Let's Work",
             imageAlt: "Kayke Santos"
         },
         heroMessages: {
@@ -171,7 +171,7 @@ export const translations = {
             p1: "Hello! I am a developer passionate about creating digital experiences that combine futuristic design and extreme performance.",
             p2: "My journey began with the curiosity to understand how things work behind the screen. Today, I turn lines of code into impactful visual solutions and intelligent automation systems. When I'm not coding, I'm exploring new AI technologies or improving my setup.",
             traits: ["Creative", "Proactive", "Detail-oriented"],
-            button: "See my journey",
+            button: "See my skills",
             imageAlt: "About Me"
         },
         projects: {
@@ -238,7 +238,7 @@ export const translations = {
             ]
         },
         skills: {
-            title: "Tech Stack",
+            title: "Tech Skills",
             categories: {
                 languages: "Languages",
                 frameworks: "Frameworks",

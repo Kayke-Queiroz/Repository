@@ -109,19 +109,21 @@ const About = () => {
                         </div>
                     </div>
 
-                    {/* Botão "Fun" */}
-                    <button
+                    {/* Botão "Fun" / Link para Habilidades */}
+                    <a
+                        href="/#skills"
+                        onClick={() => sessionStorage.setItem('skipFramesLock', 'true')}
                         className="
-              group relative px-8 py-3 bg-transparent overflow-hidden rounded-lg
+              group inline-block relative px-8 py-3 bg-transparent overflow-hidden rounded-lg
               transition-all duration-300
             "
                     >
                         <div className="absolute inset-0 w-0 bg-gradient-to-r from-cyan-500 to-blue-600 transition-all duration-[250ms] ease-out group-hover:w-full opacity-100" />
-                        <span className="relative text-cyan-400 group-hover:text-white font-bold tracking-wide transition-colors duration-300">
+                        <span className="relative text-cyan-400 group-hover:text-white font-bold tracking-wide transition-colors duration-300 text-center flex items-center justify-center">
                             {t.about.button}
                         </span>
                         <div className="absolute inset-0 border border-cyan-500/30 rounded-lg pointer-events-none" />
-                    </button>
+                    </a>
                 </div>
 
             </div>
