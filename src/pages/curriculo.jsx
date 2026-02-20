@@ -8,7 +8,7 @@ export default function Curriculo() {
     const { t } = useLanguage();
 
     return (
-        <div className="relative min-h-screen bg-black text-white overflow-x-hidden">
+        <div className="relative min-h-[100dvh] bg-black text-white overflow-x-hidden">
             {/* Background Particles */}
             <div className="fixed inset-0 z-0">
                 <TechParticles

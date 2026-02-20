@@ -42,7 +42,8 @@
   html,
   body,
   #root {
-    height: 100%;
+    min-height: 100dvh;
+    background-color: #000; /* Fallback to prevent white gaps */
     font-size: 16px;
     /* Forçar tamanho base para evitar zoom indesejado */
   }
@@ -50,7 +51,7 @@
   body {
     @apply antialiased;
     background: radial-gradient(circle at top, #0f172a 0, #020617 55%, #000 100%);
-    background-attachment: fixed;
+    background-color: #000;
     color: var(--color-text);
     font-family: var(--font-sans);
   }
