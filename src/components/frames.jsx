@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
 import { useLanguage } from '../context/LanguageContext';
-import { useScroll } from '../context/ScrollContext';
 
 const SCROLL_HEIGHT_MULTIPLIER = 2; // 200vh
 const END_THRESHOLD = 0.99;
@@ -13,9 +12,9 @@ const Frames = () => {
   const [scrollPercent, setScrollPercent] = useState(0);
   const [hasReachedEnd, setHasReachedEnd] = useState(false);
   const [isScrollLocked, setIsScrollLocked] = useState(false);
+  const [lockScrollY, setLockScrollY] = useState(0);
   const [imagesLoaded, setImagesLoaded] = useState(false);
   const { t } = useLanguage();
-  const { setVirtualScroll } = useScroll();
 
   // ===============================
   // CARREGAMENTO DAS IMAGENS (BATCHED)
@@ -73,158 +72,84 @@ const Frames = () => {
   }, []);
 
   // ===============================
-  // VIRTUAL SCROLL CONTROLLER
+  // NATIVE SCROLL CONTROLLER
   // ===============================
-  // Ao invez de depender do scroll da janela (que no celular aguarda a aba sumir),
-  // gerenciamos um "scroll virtual" interno só para a animação.
-  const targetScroll = useRef(0);
-  const currentScroll = useRef(0);
-  const totalVirtualHeight = window.innerHeight * SCROLL_HEIGHT_MULTIPLIER;
-
   useEffect(() => {
     let ticking = false;
-    let animationFrameId;
 
-    // Smooth lerp da posição alvo para a atual
-    const updateAnimation = () => {
-      // Lerp (interpolação suave)
-      currentScroll.current += (targetScroll.current - currentScroll.current) * 0.1;
-
-      const rawPercent = Math.min(1, Math.max(0, currentScroll.current / totalVirtualHeight));
-
-      const wasAtEnd = hasReachedEnd;
-      let nextHasReachedEnd = hasReachedEnd;
-
-      if (nextHasReachedEnd && rawPercent < RESET_BELOW) {
-        nextHasReachedEnd = false;
-      }
-
-      const becomingEndNow = !nextHasReachedEnd && rawPercent >= END_THRESHOLD;
-
-      if (becomingEndNow) {
-        nextHasReachedEnd = true;
-        setIsScrollLocked(true);
-        setTimeout(() => {
-          setIsScrollLocked(false);
-          // Permite que o scroll nativo assuma a partir daqui movendo a janela real
-          window.scrollTo({
-            top: window.innerHeight * SCROLL_HEIGHT_MULTIPLIER,
-            behavior: 'smooth'
-          });
-        }, 1000);
-      }
-
-      if (hasReachedEnd !== nextHasReachedEnd) {
-        setHasReachedEnd(nextHasReachedEnd);
-      }
-
-      const stickyEnd = END_THRESHOLD + STICKY_EXTRA_RANGE;
-      const canFinish = wasAtEnd && rawPercent >= stickyEnd;
-
-      let effectivePercent;
-      if (!nextHasReachedEnd) {
-        effectivePercent = rawPercent;
-      } else if (!canFinish) {
-        effectivePercent = END_THRESHOLD;
-      } else {
-        effectivePercent = rawPercent;
-      }
-
-      setScrollPercent(effectivePercent);
-
-      // Se há diferença notável entre o target e o current, continua animando
-      if (Math.abs(targetScroll.current - currentScroll.current) > 0.5) {
-        setVirtualScroll(currentScroll.current); // Sincroniza o contexto global a cada frame
-        animationFrameId = requestAnimationFrame(updateAnimation);
-      } else {
-        ticking = false;
-        // Sincroniza o state final para o react renderizar uma ultima vez
-        setVirtualScroll(currentScroll.current);
-      }
-    };
-
-    const kickAnimation = () => {
+    const onScroll = () => {
       if (!ticking) {
+        requestAnimationFrame(() => {
+          const totalScrollHeight = SCROLL_HEIGHT_MULTIPLIER * window.innerHeight;
+          const scrollTop = window.scrollY;
+
+          // enquanto estiver travado, mantém a posição e não atualiza animação
+          if (isScrollLocked) {
+            window.scrollTo({ top: lockScrollY, behavior: 'instant' });
+            ticking = false;
+            return;
+          }
+
+          const rawPercent = Math.min(1, Math.max(0, scrollTop / totalScrollHeight));
+
+          const wasAtEnd = hasReachedEnd;
+          let nextHasReachedEnd = hasReachedEnd;
+
+          // se o usuário voltar bastante, libera para repetir a animação
+          if (nextHasReachedEnd && rawPercent < RESET_BELOW) {
+            nextHasReachedEnd = false;
+          }
+
+          // se ainda não tinha chegado no fim e agora passou do threshold, arma o "travamento"
+          const becomingEndNow = !nextHasReachedEnd && rawPercent >= END_THRESHOLD;
+
+          if (becomingEndNow) {
+            nextHasReachedEnd = true;
+            // trava o scroll por ~1s na posição atual, mas sem esconder a barra
+            setIsScrollLocked(true);
+            setLockScrollY(scrollTop);
+            setTimeout(() => {
+              setIsScrollLocked(false);
+            }, 1000);
+          }
+
+          if (nextHasReachedEnd !== hasReachedEnd) {
+            setHasReachedEnd(nextHasReachedEnd);
+          }
+
+          const stickyEnd = END_THRESHOLD + STICKY_EXTRA_RANGE;
+          // só podemos "sair" depois de já ter travado antes (wasAtEnd)
+          const canFinish = wasAtEnd && rawPercent >= stickyEnd;
+
+          let effectivePercent;
+
+          if (!nextHasReachedEnd) {
+            // ainda na animação normal
+            effectivePercent = rawPercent;
+          } else if (!canFinish) {
+            // chegou no fim, mas ainda não liberou para sair -> trava no último frame
+            effectivePercent = END_THRESHOLD;
+          } else {
+            // já estava travado e o usuário continuou descendo -> libera para sair
+            effectivePercent = rawPercent;
+          }
+
+          setScrollPercent(effectivePercent);
+          ticking = false;
+        });
         ticking = true;
-        animationFrameId = requestAnimationFrame(updateAnimation);
       }
     };
 
-    const handleWheel = (e) => {
-      // Se não bloqueado e a animação não acabou (scrollPercent < stickyEnd) ou estamos travados no fim
-      const stickyEnd = END_THRESHOLD + STICKY_EXTRA_RANGE;
-      const isAnimationActive = scrollPercent < stickyEnd;
+    window.addEventListener('scroll', onScroll, { passive: true });
 
-      // Se a página nativa está rolando (já passou do vídeo), ou a trava expirou e podemos descer nativamente, não interceptamos se for pra baixo
-      if (!isAnimationActive && e.deltaY > 0 && !isScrollLocked) return;
-
-      // Se estamos acima, mas o usuário rola pra cima quando o native scroll == 0, interceptamos pra voltar a animação
-      if (!isAnimationActive && window.scrollY > 0) return;
-
-      if (isScrollLocked) {
-        e.preventDefault();
-        return;
-      }
-
-      // Impede o scroll nativo enquanto foca na animação
-      if (window.scrollY === 0 || isAnimationActive) {
-        e.preventDefault();
-        targetScroll.current = Math.max(0, Math.min(totalVirtualHeight + 100, targetScroll.current + e.deltaY));
-        kickAnimation();
-      }
-    };
-
-    let touchStartY = 0;
-    const handleTouchStart = (e) => {
-      touchStartY = e.touches[0].clientY;
-    };
-
-    const handleTouchMove = (e) => {
-      const stickyEnd = END_THRESHOLD + STICKY_EXTRA_RANGE;
-      const isAnimationActive = scrollPercent < stickyEnd;
-
-      if (!isAnimationActive && window.scrollY > 0) return;
-
-      if (window.scrollY === 0 || isAnimationActive) {
-        // block native scroll
-        if (e.cancelable) e.preventDefault();
-
-        if (isScrollLocked) return;
-
-        const touchY = e.touches[0].clientY;
-        const deltaY = touchStartY - touchY;
-        touchStartY = touchY;
-
-        // Multiplicador do swipe (ajuste de sensibilidade)
-        targetScroll.current = Math.max(0, Math.min(totalVirtualHeight + 100, targetScroll.current + deltaY * 2.5));
-        kickAnimation();
-      }
-    };
-
-    // Necessário { passive: false } para podermos dar preventDefault e parar o scroll nativo
-    window.addEventListener('wheel', handleWheel, { passive: false });
-    window.addEventListener('touchstart', handleTouchStart, { passive: false });
-    window.addEventListener('touchmove', handleTouchMove, { passive: false });
-
-    // Sincronizar native scroll rollback
-    const handleNativeScroll = () => {
-      if (window.scrollY === 0 && hasReachedEnd) {
-        // Se o usuario der um pull-to-refresh ou forçar até o topo na native scroll, volta a animação
-        targetScroll.current = 0;
-        kickAnimation();
-        setHasReachedEnd(false);
-      }
-    };
-    window.addEventListener('scroll', handleNativeScroll, { passive: true });
+    // Trigger on mount and resize
+    onScroll();
 
     return () => {
-      if (animationFrameId) cancelAnimationFrame(animationFrameId);
-      window.removeEventListener('wheel', handleWheel);
-      window.removeEventListener('touchstart', handleTouchStart);
-      window.removeEventListener('touchmove', handleTouchMove);
-      window.removeEventListener('scroll', handleNativeScroll);
+      window.removeEventListener('scroll', onScroll);
     };
-  }, [hasReachedEnd, isScrollLocked, scrollPercent, totalVirtualHeight]);
+  }, [hasReachedEnd, isScrollLocked, lockScrollY]);
 
   // ===============================
   // CANVAS RENDERER
