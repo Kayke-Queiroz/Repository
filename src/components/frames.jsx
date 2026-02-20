@@ -41,6 +41,10 @@ const Frames = () => {
         setFrames([firstImage]); // Mostra o primeiro frame
       };
 
+      // Deferir o carregamento em massa do resto do vídeo por 0.8s
+      // para não travar o carregamento dos painéis e imagens secundárias
+      await new Promise(resolve => setTimeout(resolve, 800));
+
       // B. Carregar todos (incluindo o primeiro novamente, não tem problema, cache resolve) em background
       const BATCH_SIZE = 10;
       const loaded = new Array(imageUrls.length);

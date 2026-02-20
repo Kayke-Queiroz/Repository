@@ -106,7 +106,8 @@ const SkillItem = ({ skill, index, x }) => {
                 scale: isHovered ? 1.3 : scale,
                 rotate,
                 zIndex: isHovered ? 200 : zIndex,
-                opacity
+                opacity,
+                touchAction: "pan-y"
             }}
             className={`
         absolute top-1/2 -mt-[60px] -ml-[60px] 
@@ -124,6 +125,9 @@ const SkillItem = ({ skill, index, x }) => {
       `}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
+            onPan={(e, info) => {
+                x.set(x.get() + info.delta.x * 1.5);
+            }}
         >
             <div className={`absolute inset-0 rounded-full opacity-20 bg-${styles.color}-500 blur-lg group-hover:opacity-40 transition-opacity`} />
 
@@ -172,8 +176,6 @@ export default function Skills() {
 
             {/* Container do Carrossel */}
             <div className="relative w-full h-[500px] flex items-center justify-center">
-                {/* Handler de Drag Invisível */}
-                <PanHandler x={x} />
 
                 {/* Itens */}
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10 top-20">
@@ -206,19 +208,3 @@ export default function Skills() {
         </section>
     );
 }
-
-// Handler invisível que captura o gesto de arrastar e atualiza o MotionValue manualmente
-const PanHandler = ({ x }) => {
-    // Fator de sensibilidade
-    const sensitivity = 1.5;
-
-    return (
-        <motion.div
-            className="absolute inset-0 z-30 cursor-grab active:cursor-grabbing"
-            onPan={(e, info) => {
-                x.set(x.get() + info.delta.x * sensitivity);
-            }}
-            style={{ touchAction: "none" }}
-        />
-    );
-};

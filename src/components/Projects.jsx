@@ -64,6 +64,7 @@ const ProjectCard = ({ project, index, x, t }) => {
                 zIndex: isHovered ? 200 : zIndex,
                 left: "50%",
                 marginLeft: -(CARD_WIDTH / 2), // Centralizar horizontalmente
+                touchAction: "pan-y"
             }}
             className="absolute top-10 w-[350px] h-[450px] rounded-2xl bg-black/40 border border-white/10 backdrop-blur-xl flex flex-col overflow-hidden shadow-2xl cursor-grab active:cursor-grabbing group transition-all duration-300 hover:border-cyan-500/50 hover:shadow-[0_0_30px_rgba(34,211,238,0.15)] pointer-events-auto"
             onMouseEnter={() => setIsHovered(true)}
@@ -162,11 +163,6 @@ export default function Projects() {
             {/* Container do Carrossel */}
             <div className="relative w-full h-[500px] flex items-center justify-center perspective-1000">
 
-                {/* Handler de Drag Invisível (apenas para áreas vazias) */}
-                <div className="absolute inset-x-0 inset-y-10 z-30 touch-none">
-                    <PanHandler x={x} />
-                </div>
-
                 {/* Cards (Agora com z-40 para ficar ACIMA do Handler e permitir cliques) */}
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-40">
                     {projectsList.map((project, index) => (
@@ -183,16 +179,3 @@ export default function Projects() {
         </section>
     );
 }
-
-// Handler para capturar o gesto de arrastar
-const PanHandler = ({ x }) => {
-    return (
-        <motion.div
-            className="w-full h-full cursor-grab active:cursor-grabbing"
-            onPan={(e, info) => {
-                x.set(x.get() + info.delta.x * 0.8); // Fator de sensibilidade
-            }}
-            style={{ touchAction: "none" }}
-        />
-    );
-};
