@@ -163,7 +163,7 @@ export default function Skills() {
     };
 
     return (
-        <section className="relative h-[100vh] w-full flex flex-col items-center justify-start overflow-hidden z-0 pt-20">
+        <section className="relative h-[100dvh] w-full flex flex-col items-center justify-start overflow-hidden z-0 pt-20">
 
             <div className="z-10 text-center pointer-events-none mb-10">
                 <h2 className="text-5xl font-bold text-white tracking-tight drop-shadow-xl">{t.skills.title}</h2>

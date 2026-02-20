@@ -17,7 +17,7 @@ const About = () => {
     return (
         <section
             id="sobre"
-            className="min-h-screen flex items-center justify-center relative overflow-hidden py-20"
+            className="min-h-[100dvh] flex items-center justify-center relative overflow-hidden py-20"
         >
             {/* Background Decorativo Animado */}
             <div className="absolute inset-0 pointer-events-none">
