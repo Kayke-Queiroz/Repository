@@ -207,6 +207,7 @@ const Frames = () => {
       <div
         className={`fixed top-0 left-0 w-full h-[100dvh] bg-black transition-opacity duration-300 z-overlay
           ${isEnd ? 'opacity-0 pointer-events-none' : 'opacity-100'}
+          ${scrollPercent === 0 ? 'pointer-events-none' : ''}
         `}
       >
         <canvas
