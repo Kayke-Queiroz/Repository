@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useLanguage } from '../context/LanguageContext';
+import { useScroll } from '../context/ScrollContext';
 
 const SCROLL_HEIGHT_MULTIPLIER = 2; // 200vh
 const END_THRESHOLD = 0.99;
@@ -12,9 +13,9 @@ const Frames = () => {
   const [scrollPercent, setScrollPercent] = useState(0);
   const [hasReachedEnd, setHasReachedEnd] = useState(false);
   const [isScrollLocked, setIsScrollLocked] = useState(false);
-  const [lockScrollY, setLockScrollY] = useState(0);
   const [imagesLoaded, setImagesLoaded] = useState(false);
   const { t } = useLanguage();
+  const { setVirtualScroll } = useScroll();
 
   // ===============================
   // CARREGAMENTO DAS IMAGENS (BATCHED)
@@ -76,7 +77,6 @@ const Frames = () => {
   // ===============================
   // Ao invez de depender do scroll da janela (que no celular aguarda a aba sumir),
   // gerenciamos um "scroll virtual" interno só para a animação.
-  const [virtualScroll, setVirtualScroll] = useState(0);
   const targetScroll = useRef(0);
   const currentScroll = useRef(0);
   const totalVirtualHeight = window.innerHeight * SCROLL_HEIGHT_MULTIPLIER;
@@ -134,6 +134,7 @@ const Frames = () => {
 
       // Se há diferença notável entre o target e o current, continua animando
       if (Math.abs(targetScroll.current - currentScroll.current) > 0.5) {
+        setVirtualScroll(currentScroll.current); // Sincroniza o contexto global a cada frame
         animationFrameId = requestAnimationFrame(updateAnimation);
       } else {
         ticking = false;
