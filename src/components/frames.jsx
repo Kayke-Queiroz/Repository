@@ -144,8 +144,47 @@ const Frames = () => {
       }
     };
 
-    window.addEventListener('scroll', onScroll);
-    return () => window.removeEventListener('scroll', onScroll);
+    // Interceptar eventos de wheel (mouse) e touch (mobile) para forçar o scroll
+    // Isso evita o delay no celular onde o navegador espera a barra de endereços encolher
+    const handleWheel = (e) => {
+      // Se não estiver travado e não chegou ao fim
+      if (!isScrollLocked) {
+        window.scrollBy({
+          top: e.deltaY,
+          behavior: 'auto'
+        });
+      }
+    };
+
+    let touchStartY = 0;
+    const handleTouchStart = (e) => {
+      touchStartY = e.touches[0].clientY;
+    };
+
+    const handleTouchMove = (e) => {
+      if (!isScrollLocked) {
+        const touchY = e.touches[0].clientY;
+        const deltaY = touchStartY - touchY;
+        touchStartY = touchY; // Atualiza para o próximo disparo
+
+        window.scrollBy({
+          top: deltaY * 1.5, // Multiplicador para deixar o swipe mais responsivo
+          behavior: 'auto'
+        });
+      }
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('wheel', handleWheel, { passive: true });
+    window.addEventListener('touchstart', handleTouchStart, { passive: true });
+    window.addEventListener('touchmove', handleTouchMove, { passive: true });
+
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('wheel', handleWheel);
+      window.removeEventListener('touchstart', handleTouchStart);
+      window.removeEventListener('touchmove', handleTouchMove);
+    };
   }, [hasReachedEnd, isScrollLocked, lockScrollY]);
 
   // ===============================
