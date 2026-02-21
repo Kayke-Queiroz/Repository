@@ -1,16 +1,25 @@
-# React + Vite
+# Portfolio - Kayke
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Um projeto de portfólio pessoal desenvolvido para apresentar projetos, habilidades e currículo. A aplicação conta com um design moderno, animações interativas e suporte a idiomas.
 
-Currently, two official plugins are available:
+## 🚀 Tecnologias Utilizadas
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+As principais ferramentas e bibliotecas utilizadas neste projeto são:
 
-## React Compiler
+- **[React](https://react.dev/)**: Biblioteca JavaScript para construção da interface de usuário.
+- **[Vite](https://vitejs.dev/)**: Ferramenta de build rápida para desenvolvimento web.
+- **[Tailwind CSS](https://tailwindcss.com/)**: Framework CSS utilitário para estilização rápida e responsiva.
+- **[Framer Motion](https://www.framer.com/motion/)**: Biblioteca para criação de animações fluidas em componentes React.
+- **[React Router DOM](https://reactrouter.com/)**: Navegação e roteamento entre as páginas da aplicação.
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+## ⚙️ Funcionalidades
 
-## Expanding the ESLint configuration
+- Exibição de projetos e certificados.
+- Carrossel interativo de habilidades (Skills Carousel).
+- Efeito de partículas interativas no fundo.
+- Múltiplos idiomas (Internacionalização).
+- Design 100% responsivo para todos os dispositivos.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+
+
+

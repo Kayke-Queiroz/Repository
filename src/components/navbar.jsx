@@ -107,7 +107,7 @@ const Navbar = () => {
             </a>
             {/* LinkedIn */}
             <a
-              href="https://www.linkedin.com/in/kayke-queiroz-dos-santos-031804265/"
+              href="https://www.linkedin.com/in/kayke-santos-engenheiro-de-software/?locale=pt_BR"
               target="_blank"
               rel="noopener noreferrer"
               className="group w-10 h-10 flex items-center justify-center rounded-full bg-white/5 hover:bg-white/10 transition-all"

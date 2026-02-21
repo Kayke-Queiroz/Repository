@@ -121,7 +121,33 @@ export const translations = {
                 backend: "Back-end",
                 ai: "IA & Automação",
                 tools: "Ferramentas"
-            }
+            },
+            list: [
+                {
+                    id: 1,
+                    title: "Git e GitHub: Controle e compartilhe seu código"
+                },
+                {
+                    id: 2,
+                    title: "Html e css: Ambiente, estrutura e estilo"
+                },
+                {
+                    id: 3,
+                    title: "JavaScript: aprendendo a programar"
+                },
+                {
+                    id: 4,
+                    title: "React 19: JSX, componentes, form action e useState"
+                },
+                {
+                    id: 5,
+                    title: "React: utilizando CSS Modules e Tailwind para estilização de componentes"
+                },
+                {
+                    id: 6,
+                    title: "Strapi Headless CMS: framework backend"
+                }
+            ]
         },
         frames: {
             loading: "Carregando vídeo..."
@@ -134,7 +160,8 @@ export const translations = {
         footer: {
             title: "Kayke Queiroz dos Santos",
             role: "Desenvolvedor Web",
-            rights: "Kayke Santos. Todos os direitos reservados."
+            rights: "Kayke Santos. Todos os direitos reservados.",
+            copied: "Copiado!"
         }
     },
     en: {
@@ -259,7 +286,33 @@ export const translations = {
                 backend: "Back-end",
                 ai: "AI & Automation",
                 tools: "Tools"
-            }
+            },
+            list: [
+                {
+                    id: 1,
+                    title: "Git and GitHub: Control and share your code"
+                },
+                {
+                    id: 2,
+                    title: "HTML and CSS: Environment, structure and style"
+                },
+                {
+                    id: 3,
+                    title: "JavaScript: learning to program"
+                },
+                {
+                    id: 4,
+                    title: "React 19: JSX, components, form action and useState"
+                },
+                {
+                    id: 5,
+                    title: "React: using CSS Modules and Tailwind for component styling"
+                },
+                {
+                    id: 6,
+                    title: "Strapi Headless CMS: framework backend"
+                }
+            ]
         },
         frames: {
             loading: "Loading video..."
@@ -272,7 +325,8 @@ export const translations = {
         footer: {
             title: "Kayke Queiroz dos Santos",
             role: "Web Developer",
-            rights: "Kayke Santos. All rights reserved."
+            rights: "Kayke Santos. All rights reserved.",
+            copied: "Copied!"
         }
     }
 };

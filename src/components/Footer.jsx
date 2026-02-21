@@ -1,8 +1,17 @@
+import { useState } from "react";
 import { useLanguage } from "../context/LanguageContext";
 
 const Footer = () => {
     const currentYear = new Date().getFullYear();
     const { t } = useLanguage();
+    const [copiedText, setCopiedText] = useState(null);
+
+    const handleCopy = (e, text) => {
+        e.preventDefault();
+        navigator.clipboard.writeText(text);
+        setCopiedText(text);
+        setTimeout(() => setCopiedText(null), 2000);
+    };
 
     const socialLinks = [
         {
@@ -25,29 +34,24 @@ const Footer = () => {
             ),
         },
         {
-            name: "Instagram",
-            url: "https://instagram.com/seuusuario", // Substitua pelo seu usuário real
+            name: "LinkedIn",
+            url: "https://www.linkedin.com/in/kayke-santos-engenheiro-de-software/?locale=pt_BR",
             icon: (
                 <svg
-                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
                     width="24"
                     height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
+                    fill="currentColor"
+                    xmlns="http://www.w3.org/2000/svg"
                 >
-                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
-                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+                    <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
                 </svg>
             ),
         },
         {
             name: "Email",
-            url: "mailto:contato@kaykesantos.com", // Substitua pelo seu email real
+            url: "kayke7kk@gmail.com", // Substitua pelo seu email real
+            isCopy: true,
             icon: (
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -67,7 +71,8 @@ const Footer = () => {
         },
         {
             name: "WhatsApp",
-            url: "https://wa.me/5511999999999", // Substitua pelo seu número real
+            url: "(77) 999529094", // Substitua pelo seu número real
+            isCopy: true,
             icon: (
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -109,10 +114,11 @@ const Footer = () => {
                     {socialLinks.map((link) => (
                         <a
                             key={link.name}
-                            href={link.url}
-                            target="_blank"
+                            href={link.isCopy ? "#" : link.url}
+                            target={link.isCopy ? undefined : "_blank"}
                             rel="noopener noreferrer"
                             aria-label={link.name}
+                            onClick={link.isCopy ? (e) => handleCopy(e, link.url) : undefined}
                             className="
                 group relative p-4 rounded-xl bg-white/5 border border-white/10
                 flex items-center justify-center
@@ -125,7 +131,7 @@ const Footer = () => {
                             </div>
                             {/* Tooltip simples */}
                             <span className="absolute -bottom-8 opacity-0 group-hover:opacity-100 transition-opacity text-xs text-cyan-400 font-mono tracking-widest whitespace-nowrap pointer-events-none">
-                                {link.name}
+                                {copiedText === link.url ? t.footer.copied : link.name}
                             </span>
                         </a>
                     ))}

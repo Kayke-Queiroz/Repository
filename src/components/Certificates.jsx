@@ -3,70 +3,73 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "../context/LanguageContext";
 
 // --- DADOS MOCKADOS (Pode ser movido para arquivo separado depois) ---
-import gitWebp from "../assets/videos/certificates/certificado.webp";
+import gitJpg from "../assets/videos/certificates/git.jpg";
+import strapiJpg from "../assets/videos/certificates/strapi.jpg";
+import htmlCssJpg from "../assets/videos/certificates/htmlcss.jpg";
+import jsJpg from "../assets/videos/certificates/javascript.jpg";
+import reactJpg from "../assets/videos/certificates/react.jpg";
+import tailwindJpg from "../assets/videos/certificates/tailwind.jpg";
 
 const certificatesData = [
     {
         id: 1,
-        title: "React Integrando seu projeto React com APIs",
+        title: "Git e GitHub: Controle e compartilhe seu código",
         issuer: "Alura",
         duration: "8h",
-        year: "2024",
-        category: "Front-end",
-        // Link externo para ver/baixar o certificado original
-        link: "https://cursos.alura.com.br/certificate/4d416954-4aa9-40c2-90a6-123456789",
-        // Arquivo de imagem (preview)
-        image: gitWebp
+        year: "2026",
+        category: "Tools",
+        link: "https://cursos.alura.com.br/certificate/6b86af4d-1de9-4a3f-b08b-a020ef23423f?lang=pt_BR",
+        image: gitJpg
     },
     {
         id: 2,
-        title: "Next.js: explorando o framework",
+        title: "Html e css: Ambiente, estrutura e estilo",
         issuer: "Alura",
-        duration: "10h",
-        year: "2024",
+        duration: "20h",
+        year: "2026",
         category: "Front-end",
-        link: "#",
-        image: gitWebp
+        link: "https://cursos.alura.com.br/certificate/d03714f4-1e17-4263-84d9-65151ab5aebd?lang=pt_BR",
+        image: htmlCssJpg
     },
     {
         id: 3,
-        title: "Node.js: Criando sua primeira biblioteca",
+        title: "JavaScript: aprendendo a programar",
         issuer: "Alura",
-        duration: "12h",
-        year: "2023",
-        category: "Back-end",
-        link: "#",
-        image: gitWebp
+        duration: "20h",
+        year: "2026",
+        category: "Front-end",
+        link: "https://cursos.alura.com.br/certificate/3ed481aa-c931-4a73-8f43-a8c3e6332c85?lang=pt_BR",
+        image: jsJpg
     },
     {
         id: 4,
-        title: "Tailwind CSS: Estilizando a sua página com classes utilitárias",
+        title: "React 19: JSX, componentes, form action e useState",
         issuer: "Alura",
-        duration: "8h",
-        year: "2023",
+        duration: "10h",
+        year: "2026",
         category: "Front-end",
-        link: "#",
-        image: gitWebp
+        link: "https://cursos.alura.com.br/certificate/367de19f-4d20-4fe0-bd27-df617604d191?lang=pt_BR",
+        image: reactJpg
     },
     {
         id: 5,
-        title: "IA Generativa: Ferramentas e aplicações",
+        title: "React: utilizando CSS Modules e Tailwind para estilização de componentes",
         issuer: "Alura",
-        duration: "6h",
-        year: "2024",
-        category: "AI & Automation",
-        link: "#",
-        image: gitWebp
+        duration: "12h",
+        year: "2026",
+        category: "Front-end",
+        link: "https://cursos.alura.com.br/certificate/083ab6b0-7d83-423d-90c3-def5f7d859cd?lang=pt_BR",
+        image: tailwindJpg
     },
     {
         id: 6,
-        title: "Git e GitHub: Controle e compartilhe seu código",
-        issuer: "Alura",
-        duration: "6h",
-        year: "2022",
-        category: "Tools",
-        link: "#",
-        image: gitWebp
+        title: "Strapi Headless CMS",
+        issuer: "cursa",
+        duration: "1h",
+        year: "2026",
+        category: "Back-end",
+        link: "null",
+        image: strapiJpg
     }
 ];
 
@@ -195,7 +198,7 @@ export default function Certificates() {
                                                         </div>
 
                                                         <h3 className="text-lg font-bold text-white mb-1 leading-snug group-hover:text-cyan-300 transition-colors">
-                                                            {cert.title}
+                                                            {t.certificates.list?.find(c => c.id === cert.id)?.title || cert.title}
                                                         </h3>
                                                         <p className="text-sm text-gray-400 mb-4">{cert.issuer}</p>
                                                     </div>
@@ -230,7 +233,7 @@ export default function Certificates() {
                                                     <div className="flex-1 w-full relative overflow-hidden bg-black">
                                                         <img
                                                             src={cert.image}
-                                                            alt={`Certificate ${cert.title}`}
+                                                            alt={`Certificate ${t.certificates.list?.find(c => c.id === cert.id)?.title || cert.title}`}
                                                             className="w-full h-full object-cover opacity-90 hover:opacity-100 transition-opacity duration-500" // object-cover remove espaços brancos
                                                         />
 
@@ -241,11 +244,14 @@ export default function Certificates() {
                                                     {/* Botões Sobrepostos na Imagem (parte inferior) */}
                                                     <div className="absolute bottom-4 left-0 right-0 flex justify-center items-center gap-3 px-4 z-20">
                                                         <a
-                                                            href={cert.link}
-                                                            target="_blank"
+                                                            href={cert.link !== "null" ? cert.link : "#"}
+                                                            target={cert.link !== "null" ? "_blank" : undefined}
                                                             rel="noopener noreferrer"
                                                             className="flex-1 bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-bold py-2 px-4 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 active:scale-95 flex justify-center items-center gap-2 border border-cyan-400/30 backdrop-blur-sm"
-                                                            onClick={(e) => e.stopPropagation()}
+                                                            onClick={(e) => {
+                                                                e.stopPropagation();
+                                                                if (cert.link === "null") e.preventDefault();
+                                                            }}
                                                         >
                                                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
                                                             {t.certificates.open}

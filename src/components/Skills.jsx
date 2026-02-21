@@ -133,6 +133,7 @@ const SkillItem = ({ skill, index, x, config, totalArc }) => {
         cursor-grab active:cursor-grabbing
         group
         transition-colors duration-300
+        select-none
       `}
 
             onMouseEnter={() => setIsHovered(true)}
