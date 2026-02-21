@@ -54,7 +54,7 @@ export const translations = {
                 {
                     id: 2,
                     name: "Portifolio Pessoal",
-                    description: "Portfólio moderno e responsivo desenvolvido com React e Tailwind CSS, com animações fluidas utilizando Framer Motion e deploy otimizado na Vercel."
+                    description: "Este é o próprio portfólio que você está visualizando agora. Desenvolvido do zero com React e Tailwind CSS, com animações fluidas utilizando Framer Motion e deploy realizado na Vercel para alta performance e escalabilidade."
                 },
                 {
                     id: 3,
@@ -192,7 +192,7 @@ export const translations = {
                 {
                     id: 2,
                     name: "Personal Portfolio Website",
-                    description: "Modern and responsive portfolio website built with React and Tailwind CSS, featuring smooth animations powered by Framer Motion and optimized deployment on Vercel."
+                    description: "The very portfolio you are currently viewing. Designed and developed from scratch using React and Tailwind CSS, featuring smooth animations powered by Framer Motion and deployed on Vercel for performance and scalability."
                 },
                 {
                     id: 3,

@@ -13,7 +13,7 @@ const ProjectCard = ({ project, index, x, t }) => {
     // Original static tech list and urls
     const staticData = [
         { tech: ["Javascript", "Google Books API", "Firebase"], github: "https://github.com/Kayke-Queiroz/Acervo-Digital-de-Livros", url: "https://leitura-para-todos-a18e8.web.app/" },
-        { tech: ["Next.js", "Stripe", "Tailwind"], github: "https://github.com/Kayke-Queiroz", url: "#" },
+        { tech: ["React", "Tailwind", "Framer Motion", "Vercel"], github: "https://github.com/Kayke-Queiroz/Repository", url: "#" },
         { tech: ["Python", "LangChain", "Vector DB"], github: "https://github.com/Kayke-Queiroz", url: "#" },
         { tech: ["React Native", "Firebase", "Expo"], github: "https://github.com/Kayke-Queiroz", url: "#" },
         { tech: ["React", "D3.js", "AWS"], github: "https://github.com/Kayke-Queiroz", url: "#" },
