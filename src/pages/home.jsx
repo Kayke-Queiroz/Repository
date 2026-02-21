@@ -13,7 +13,7 @@ import Footer from '../components/Footer'
 import BackgroundParticles from '../components/BackgroundParticles'
 import HeroMessages from '../components/HeroMessages'
 
-const ENABLE_LOADING = false
+const ENABLE_LOADING = true
 
 export default function Home() {
     const isLoading = useLoading(2000)
