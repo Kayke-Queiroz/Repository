@@ -232,12 +232,12 @@ export default function Skills() {
             </div>
 
             {/* Barra de Controle Inferior (Touchpad de Giro) */}
-            <div className="z-30 w-full flex justify-center mt-[-40px] mb-8">
+            <div className="z-30 w-full flex justify-center mt-[-40px] mb-12 lg:mb-20">
                 <PanBar x={x} totalArc={totalArc} />
             </div>
 
             {/* Legenda de Categorias */}
-            <div className="absolute bottom-10 flex flex-wrap justify-center gap-6 z-20 px-4">
+            <div className="relative mt-8 md:mt-auto mb-10 flex flex-wrap justify-center gap-6 z-20 px-4">
                 {Object.entries(categoryStyles).map(([category, style]) => (
                     <div key={category} className="flex items-center gap-2 bg-black/30 px-3 py-1.5 rounded-full border border-white/10 backdrop-blur-sm">
                         <div

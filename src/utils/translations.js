@@ -48,13 +48,13 @@ export const translations = {
             list: [
                 {
                     id: 1,
-                    name: "Automação de Vendas com IA",
-                    description: "Sistema inteligente que qualifica leads e agenda reuniões automaticamente usando OpenAI e WhatsApp API."
+                    name: "Plataforma de Acervo de Livros",
+                    description: "Aplicação web interativa que integra a API do Google Books para buscar dados de livros em tempo real e utiliza o Firebase para armazenamento em nuvem e gerenciamento de usuários."
                 },
                 {
                     id: 2,
-                    name: "E-commerce SaaS",
-                    description: "Plataforma completa de loja virtual com dashboard administrativo e integração de pagamentos."
+                    name: "Portifolio Pessoal",
+                    description: "Portfólio moderno e responsivo desenvolvido com React e Tailwind CSS, com animações fluidas utilizando Framer Motion e deploy otimizado na Vercel."
                 },
                 {
                     id: 3,
@@ -186,13 +186,13 @@ export const translations = {
             list: [
                 {
                     id: 1,
-                    name: "AI Sales Automation",
-                    description: "Intelligent system that qualifies leads and schedules meetings automatically using OpenAI and WhatsApp API."
+                    name: "Book Collection Platform",
+                    description: "Interactive web application that integrates the Google Books API to fetch real-time book data and uses Firebase for cloud-based storage and user management."
                 },
                 {
                     id: 2,
-                    name: "SaaS E-commerce",
-                    description: "Complete online store platform with administrative dashboard and payment integration."
+                    name: "Personal Portfolio Website",
+                    description: "Modern and responsive portfolio website built with React and Tailwind CSS, featuring smooth animations powered by Framer Motion and optimized deployment on Vercel."
                 },
                 {
                     id: 3,
