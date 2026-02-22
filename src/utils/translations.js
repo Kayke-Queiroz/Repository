@@ -59,7 +59,7 @@ export const translations = {
                 {
                     id: 3,
                     name: "Chatbot de Atendimento",
-                    description: "Bot treinado com dados da empresa para responder dúvidas frequentes 24/7."
+                    description: "Bot treinado com dados da empresa para responder dúvidas frequentes 24 horas"
                 },
                 {
                     id: 4,
