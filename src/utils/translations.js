@@ -10,8 +10,8 @@ export const translations = {
             title: "Kayke Santos",
             role: "Desenvolvedor Front-end • Engenheiro de IA • Engenheiro de Automação",
             description: "Construo interfaces de alta performance e sistemas de automação inteligentes que transformam ideias em produtos digitais escaláveis.",
-            viewProjects: "Ver Curriculo",
-            contactMe: "Vamos trabalhar",
+            viewProjects: "Curriculo",
+            contactMe: "Contate-me",
             imageAlt: "Kayke Santos"
         },
         heroMessages: {
