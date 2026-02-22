@@ -61,7 +61,7 @@ export default function HeroOverlay() {
             {/* Placeholder for actual image */}
             <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/60 z-10"></div>
             <img
-              src="/assets/icone.png"
+              src="/assets/icone.jpg"
               alt={t.hero.imageAlt}
               className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500"
             />
