@@ -41,12 +41,13 @@ const Frames = () => {
         setFrames([firstImage]); // Mostra o primeiro frame
       };
 
-      // Deferir o carregamento em massa do resto do vídeo por 0.8s
-      // para não travar o carregamento dos painéis e imagens secundárias
-      await new Promise(resolve => setTimeout(resolve, 800));
+      // Deferir o carregamento em massa do resto do vídeo por 100ms
+      // para aproveitar o tempo em que a tela de Loading está rodando 
+      // e não atrasar o restante da página (já que Loading agora é overlay)
+      await new Promise(resolve => setTimeout(resolve, 100));
 
       // B. Carregar todos (incluindo o primeiro novamente, não tem problema, cache resolve) em background
-      const BATCH_SIZE = 10;
+      const BATCH_SIZE = 20;
       const loaded = new Array(imageUrls.length);
 
       const loadImage = (url) => new Promise((resolve) => {
@@ -64,7 +65,8 @@ const Frames = () => {
           if (img) loaded[i + idx] = img;
         });
 
-        await new Promise(resolve => setTimeout(resolve, 10));
+        // Let the event loop breathe, but without artificial delay
+        await new Promise(resolve => setTimeout(resolve, 0));
       }
 
       const validImages = loaded.filter(Boolean);

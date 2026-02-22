@@ -11,7 +11,7 @@ export default function Loading() {
   }, [])
 
   return (
-    <div className="fixed inset-0 z-50 bg-black flex items-center justify-center overflow-hidden">
+    <div className="fixed inset-0 z-[9999] bg-black flex items-center justify-center overflow-hidden pointer-events-auto">
       <video
         ref={videoRef}
         src={loadingVideo}
