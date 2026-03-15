@@ -9,6 +9,8 @@ import htmlCssJpg from "../assets/videos/certificates/htmlcss.jpg";
 import jsJpg from "../assets/videos/certificates/javascript.jpg";
 import reactJpg from "../assets/videos/certificates/react.jpg";
 import tailwindJpg from "../assets/videos/certificates/tailwind.jpg";
+import nodeJpg from "../assets/videos/certificates/node.js.jpg";
+import native from "../assets/videos/certificates/native.jpg";
 
 const certificatesData = [
     {
@@ -70,6 +72,26 @@ const certificatesData = [
         category: "Back-end",
         link: "null",
         image: strapiJpg
+    },
+    {
+        id: 7,
+        title: "Node.js: crie aplicações com JavaScript",
+        issuer: "Alura",
+        duration: "12h",
+        year: "2026",
+        category: "Back-end",
+        link: "https://cursos.alura.com.br/user/kayke7kk/course/node-primeira-api-express/certificate?lang=en",
+        image: nodeJpg
+    },
+    {
+        id: 8,
+        title: "React Native: crie aplicativos com JavaScript",
+        issuer: "Alura",
+        duration: "12h",
+        year: "2026",
+        category: "Front-end",
+        link: "https://cursos.alura.com.br/user/kayke7kk/course/react-native-desenvolvendo-expo/certificate?lang=en",
+        image: native
     }
 ];
 
@@ -79,11 +101,24 @@ export default function Certificates() {
     const [isOpen, setIsOpen] = useState(false);
     const [selectedCategory, setSelectedCategory] = useState("All");
     const [flippedId, setFlippedId] = useState(null);
+    const [currentPage, setCurrentPage] = useState(1);
     const { t } = useLanguage();
 
     const filteredCertificates = selectedCategory === "All"
         ? certificatesData
         : certificatesData.filter(cert => cert.category === selectedCategory);
+
+    // --- Lógica de Paginação ---
+    const itemsPerPage = 6;
+    const totalPages = Math.ceil(filteredCertificates.length / itemsPerPage);
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const currentCertificates = filteredCertificates.slice(startIndex, endIndex);
+
+    const handleCategoryChange = (cat) => {
+        setSelectedCategory(cat);
+        setCurrentPage(1); // Reseta a página ao trocar de categoria
+    };
 
     const handleCardClick = (id) => {
         setFlippedId(flippedId === id ? null : id);
@@ -134,14 +169,14 @@ export default function Certificates() {
                             {categories.map((cat) => (
                                 <button
                                     key={cat}
-                                    onClick={() => setSelectedCategory(cat)}
+                                    onClick={() => handleCategoryChange(cat)}
                                     className={`
-                    px-4 py-2 rounded-full text-sm font-medium transition-all duration-300
-                    border border-white/10 backdrop-blur-sm
-                    ${selectedCategory === cat
+                                        px-4 py-2 rounded-full text-sm font-medium transition-all duration-300
+                                        border border-white/10 backdrop-blur-sm
+                                        ${selectedCategory === cat
                                             ? "bg-cyan-500/20 text-cyan-300 border-cyan-500/50 shadow-[0_0_10px_rgba(6,182,212,0.3)]"
                                             : "bg-black/40 text-gray-400 hover:bg-white/10 hover:text-white"}
-                  `}
+                                    `}
                                 >
                                     {categoryLabels[cat] || cat}
                                 </button>
@@ -154,7 +189,7 @@ export default function Certificates() {
                             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pb-4"
                         >
                             <AnimatePresence mode="popLayout">
-                                {filteredCertificates.map((cert) => {
+                                {currentCertificates.map((cert) => {
                                     const isFlipped = flippedId === cert.id;
 
                                     return (
@@ -276,11 +311,84 @@ export default function Certificates() {
                             </AnimatePresence>
                         </motion.div>
 
+                        {/* Paginação */}
+                        {totalPages > 1 && (
+                            <div className="flex justify-center items-center gap-2 mt-4 mb-4">
+                                <button
+                                    onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                                    disabled={currentPage === 1}
+                                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 border backdrop-blur-sm
+                                        ${currentPage === 1 
+                                            ? "border-white/5 bg-white/5 text-gray-600 cursor-not-allowed" 
+                                            : "border-white/10 bg-black/40 text-gray-400 hover:bg-cyan-500/20 hover:text-cyan-300 hover:border-cyan-500/50"}`}
+                                >
+                                    {t.certificates.pagination.prev}
+                                </button>
+
+                                <div className="flex gap-2">
+                                    {Array.from({ length: totalPages }).map((_, idx) => {
+                                        const page = idx + 1;
+                                        return (
+                                            <button
+                                                key={page}
+                                                onClick={() => setCurrentPage(page)}
+                                                className={`w-10 h-10 rounded-lg text-sm font-medium flex items-center justify-center transition-all duration-300
+                                                    ${currentPage === page 
+                                                        ? "bg-cyan-500 text-white shadow-[0_0_15px_rgba(6,182,212,0.5)] border border-cyan-400" 
+                                                        : "bg-black/40 text-gray-400 border border-white/10 hover:bg-white/10 hover:text-white"}`}
+                                            >
+                                                {page}
+                                            </button>
+                                        );
+                                    })}
+                                </div>
+
+                                <button
+                                    onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                                    disabled={currentPage === totalPages}
+                                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 border backdrop-blur-sm
+                                        ${currentPage === totalPages 
+                                            ? "border-white/5 bg-white/5 text-gray-600 cursor-not-allowed" 
+                                            : "border-white/10 bg-black/40 text-gray-400 hover:bg-cyan-500/20 hover:text-cyan-300 hover:border-cyan-500/50"}`}
+                                >
+                                    {t.certificates.pagination.next}
+                                </button>
+                            </div>
+                        )}
+
                         {filteredCertificates.length === 0 && (
                             <div className="text-center text-gray-500 py-10">
                                 {t.certificates.empty}
                             </div>
                         )}
+
+                        {/* Botão para ver mais certificados na Alura */}
+                        <div className="flex justify-center mt-6 pb-4 relative z-20">
+                            <a
+                                href="https://cursos.alura.com.br/user/kayke7kk"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="group relative px-6 py-3 rounded-full bg-cyan-600/20 text-cyan-400 font-bold tracking-wide border border-cyan-500/30 hover:bg-cyan-500/30 hover:shadow-[0_0_20px_rgba(34,211,238,0.4)] hover:-translate-y-1 transition-all duration-300 flex items-center justify-center gap-3 overflow-hidden"
+                            >
+                                <span className="relative z-10 flex items-center gap-2">
+                                    <svg 
+                                        className="w-5 h-5 group-hover:scale-110 transition-transform duration-300"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        strokeWidth="2"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                    >
+                                        <path d="M21.42 10.922a2 2 0 0 0-.019-3.838L12.83 4.34a2 2 0 0 0-1.66 0L2.6 7.08a2 2 0 0 0 0 3.832l8.57 3.698a2 2 0 0 0 1.66 0z" />
+                                        <path d="M22 10v6" />
+                                        <path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5" />
+                                    </svg>
+                                    {t.certificates.seeMore}
+                                </span>
+                            </a>
+                        </div>
                     </motion.div>
                 )}
             </AnimatePresence>

@@ -26,9 +26,12 @@ const skills = [
     { name: "GitHub", category: "Tools", icon: "https://raw.githubusercontent.com/Kayke-Queiroz/Kayke-Queiroz/main/tech/githubblack.svg" },
     { name: "Figma", category: "Tools", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg" },
     { name: "Windows", category: "Tools", icon: "https://raw.githubusercontent.com/Kayke-Queiroz/Kayke-Queiroz/main/tech/windows.svg" },
+    { name: "Postman", category: "Tools", icon: "https://www.vectorlogo.zone/logos/getpostman/getpostman-icon.svg" },
+    { name: "Expo Go", category: "Tools", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/expo/expo-original.svg" },
     { name: "WordPress", category: "Platforms", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/wordpress/wordpress-original.svg" },
     { name: "FireBase", category: "Platforms", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/firebase/firebase-plain.svg" },
     { name: "Vercel", category: "Platforms", icon: "https://raw.githubusercontent.com/Kayke-Queiroz/Kayke-Queiroz/main/tech/Vercel.svg" },
+
 ];
 
 const categoryStyles = {

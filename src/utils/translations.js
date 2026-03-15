@@ -58,18 +58,13 @@ export const translations = {
                 },
                 {
                     id: 3,
-                    name: "Chatbot de Atendimento",
-                    description: "Bot treinado com dados da empresa para responder dúvidas frequentes 24 horas"
+                    name: "Gerenciador de Filmes",
+                    description: "Aplicação full-stack desenvolvida para estudo, focada em organizar, explorar e gerenciar informações sobre filmes. A plataforma permite aos usuários criar contas, fazer login, pesquisar filmes, visualizar detalhes completos e manter uma coleção pessoal, integrando funcionalidades de frontend e backend para oferecer uma experiência interativa e segura."
                 },
                 {
                     id: 4,
-                    name: "App de Gestão Financeira",
-                    description: "Aplicação mobile para controle de gastos pessoais com gráficos interativos."
-                },
-                {
-                    id: 5,
-                    name: "Dashboard Analytics",
-                    description: "Painel administrativo para visualização de métricas de marketing em tempo real."
+                    name: "Catálogo de Produtos",
+                    description: "Aplicação full-stack para gerenciamento de produtos. Inclui API REST, cache em Redis, interface web moderna, exportação de dados e testes automatizados. Usuários podem criar, atualizar, excluir e acompanhar produtos com dashboards e histórico de alterações."
                 }
             ]
         },
@@ -115,6 +110,11 @@ export const translations = {
             open: "Abrir Certificado",
             close: "Fechar",
             empty: "Nenhum certificado encontrado nesta categoria.",
+            seeMore: "Ver todos os certificados na Alura",
+            pagination: {
+                prev: "Anterior",
+                next: "Próximo"
+            },
             categories: {
                 all: "Todos",
                 frontend: "Front-end",
@@ -146,6 +146,14 @@ export const translations = {
                 {
                     id: 6,
                     title: "Strapi Headless CMS: framework backend"
+                },
+                {
+                    id: 7,
+                    title: "Node.js: crie aplicações com JavaScript"
+                },
+                {
+                    id: 8,
+                    title: "React Native: crie aplicativos com JavaScript"
                 }
             ]
         },
@@ -223,18 +231,13 @@ export const translations = {
                 },
                 {
                     id: 3,
-                    name: "Customer Service Chatbot",
-                    description: "Bot trained with company data to answer frequent questions 24/7."
+                    name: "Movie Library Manager",
+                    description: "Full-stack application developed for study purposes, focused on organizing, exploring, and managing movie information. The platform allows users to create accounts, log in, search for films, view detailed data, and maintain a personal collection, integrating both frontend and backend features to provide a seamless and secure experience."
                 },
                 {
                     id: 4,
-                    name: "Financial Management App",
-                    description: "Mobile application for personal expense control with interactive charts."
-                },
-                {
-                    id: 5,
-                    name: "Analytics Dashboard",
-                    description: "Administrative panel for real-time marketing metrics visualization."
+                    name: "Product Catalog",
+                    description: "Full-stack application for product management. Features REST API, Redis caching, modern web interface, data export, and automated testing. Users can create, update, delete, and track products using dashboards and change history."
                 }
             ]
         },
@@ -280,6 +283,11 @@ export const translations = {
             open: "Open Certificate",
             close: "Close",
             empty: "No certificates found in this category.",
+            seeMore: "See all certificates on Alura",
+            pagination: {
+                prev: "Previous",
+                next: "Next"
+            },
             categories: {
                 all: "All",
                 frontend: "Front-end",
@@ -311,6 +319,14 @@ export const translations = {
                 {
                     id: 6,
                     title: "Strapi Headless CMS: framework backend"
+                },
+                {
+                    id: 7,
+                    title: "Node.js: create applications with JavaScript"
+                },
+                {
+                    id: 8,
+                    title: "React Native: create applications with JavaScript"
                 }
             ]
         },
