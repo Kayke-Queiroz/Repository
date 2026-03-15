@@ -35,7 +35,7 @@ const Footer = () => {
         },
         {
             name: "Alura",
-            url: "https://cursos.alura.com.br/user/kayke7kk", // Substitua pelo link do seu perfil real na Alura
+            url: "https://cursos.alura.com.br/user/kayke7kk",
             icon: (
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
