@@ -42,7 +42,7 @@ export default function HeroOverlay() {
             </Link>
 
             <a
-              href="/#contato"
+              href="/#contatar"
               onClick={() => sessionStorage.setItem('skipFramesLock', 'true')}
               className="px-6 py-2.5 rounded-lg bg-white/5 border border-white/10 text-white font-bold backdrop-blur-sm transition-all duration-300 hover:bg-white/10 hover:border-white/20 active:scale-95 cursor-pointer text-sm md:text-base flex items-center justify-center gap-2">
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>

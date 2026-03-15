@@ -34,17 +34,23 @@ const Footer = () => {
             ),
         },
         {
-            name: "LinkedIn",
-            url: "https://www.linkedin.com/in/kayke-santos-engenheiro-de-software/?locale=pt_BR",
+            name: "Alura",
+            url: "https://cursos.alura.com.br/user/kayke7kk", // Substitua pelo link do seu perfil real na Alura
             icon: (
                 <svg
-                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
                     width="24"
                     height="24"
-                    fill="currentColor"
-                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                 >
-                    <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+                    <path d="M21.42 10.922a2 2 0 0 0-.019-3.838L12.83 4.34a2 2 0 0 0-1.66 0L2.6 7.08a2 2 0 0 0 0 3.832l8.57 3.698a2 2 0 0 0 1.66 0z" />
+                    <path d="M22 10v6" />
+                    <path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5" />
                 </svg>
             ),
         },

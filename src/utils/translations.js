@@ -58,18 +58,18 @@ export const translations = {
                 },
                 {
                     id: 3,
-                    name: "Chatbot de Atendimento",
-                    description: "Bot treinado com dados da empresa para responder dúvidas frequentes 24 horas"
+                    name: "Gerenciador de Filmes",
+                    description: "Aplicação full-stack desenvolvida para estudo, focada em organizar, explorar e gerenciar informações sobre filmes. A plataforma permite aos usuários criar contas, fazer login, pesquisar filmes, visualizar detalhes completos e manter uma coleção pessoal, integrando funcionalidades de frontend e backend para oferecer uma experiência interativa e segura."
                 },
                 {
                     id: 4,
-                    name: "App de Gestão Financeira",
-                    description: "Aplicação mobile para controle de gastos pessoais com gráficos interativos."
+                    name: "Catálogo de Produtos",
+                    description: "Aplicação full-stack para gerenciamento de produtos. Inclui API REST, cache em Redis, interface web moderna, exportação de dados e testes automatizados. Usuários podem criar, atualizar, excluir e acompanhar produtos com dashboards e histórico de alterações."
                 },
                 {
                     id: 5,
-                    name: "Dashboard Analytics",
-                    description: "Painel administrativo para visualização de métricas de marketing em tempo real."
+                    name: "Aplicativo Mobile",
+                    description: "Em desenvolvimento: Aplicativo cross-platform criado com React Native e Expo focado em usabilidade móvel moderna e alta performance."
                 }
             ]
         },
@@ -115,6 +115,11 @@ export const translations = {
             open: "Abrir Certificado",
             close: "Fechar",
             empty: "Nenhum certificado encontrado nesta categoria.",
+            seeMore: "Ver todos os certificados na Alura",
+            pagination: {
+                prev: "Anterior",
+                next: "Próximo"
+            },
             categories: {
                 all: "Todos",
                 frontend: "Front-end",
@@ -146,8 +151,30 @@ export const translations = {
                 {
                     id: 6,
                     title: "Strapi Headless CMS: framework backend"
+                },
+                {
+                    id: 7,
+                    title: "Node.js: crie aplicações com JavaScript"
+                },
+                {
+                    id: 8,
+                    title: "React Native: crie aplicativos com JavaScript"
                 }
             ]
+        },
+        contact: {
+            title: "Vamos Conversar?",
+            subtitle: "Tem algum projeto em mente ou oportunidade? Envie-me uma mensagem e retornarei o mais breve possível.",
+            nameLabel: "NOME",
+            namePlaceholder: "Digite seu nome",
+            emailLabel: "E-MAIL",
+            emailPlaceholder: "exemplo@email.com",
+            messageLabel: "MENSAGEM",
+            messagePlaceholder: "Como posso ajudar você hoje?",
+            button: "Enviar Mensagem",
+            sending: "Enviando...",
+            successMessage: "Mensagem enviada com sucesso! Entrarei em contato em breve.",
+            errorMessage: "Ops! Algo deu errado ao enviar a mensagem. Tente novamente mais tarde."
         },
         frames: {
             loading: "Carregando vídeo..."
@@ -223,18 +250,18 @@ export const translations = {
                 },
                 {
                     id: 3,
-                    name: "Customer Service Chatbot",
-                    description: "Bot trained with company data to answer frequent questions 24/7."
+                    name: "Movie Library Manager",
+                    description: "Full-stack application developed for study purposes, focused on organizing, exploring, and managing movie information. The platform allows users to create accounts, log in, search for films, view detailed data, and maintain a personal collection, integrating both frontend and backend features to provide a seamless and secure experience."
                 },
                 {
                     id: 4,
-                    name: "Financial Management App",
-                    description: "Mobile application for personal expense control with interactive charts."
+                    name: "Product Catalog",
+                    description: "Full-stack application for product management. Features REST API, Redis caching, modern web interface, data export, and automated testing. Users can create, update, delete, and track products using dashboards and change history."
                 },
                 {
                     id: 5,
-                    name: "Analytics Dashboard",
-                    description: "Administrative panel for real-time marketing metrics visualization."
+                    name: "Mobile Application",
+                    description: "In development: A cross-platform app built with React Native and Expo focusing on modern mobile usability and high performance."
                 }
             ]
         },
@@ -280,6 +307,11 @@ export const translations = {
             open: "Open Certificate",
             close: "Close",
             empty: "No certificates found in this category.",
+            seeMore: "See all certificates on Alura",
+            pagination: {
+                prev: "Previous",
+                next: "Next"
+            },
             categories: {
                 all: "All",
                 frontend: "Front-end",
@@ -311,8 +343,30 @@ export const translations = {
                 {
                     id: 6,
                     title: "Strapi Headless CMS: framework backend"
+                },
+                {
+                    id: 7,
+                    title: "Node.js: create applications with JavaScript"
+                },
+                {
+                    id: 8,
+                    title: "React Native: create applications with JavaScript"
                 }
             ]
+        },
+        contact: {
+            title: "Let's Talk?",
+            subtitle: "Have a project in mind or an opportunity? Send me a message and I'll get back to you as soon as possible.",
+            nameLabel: "NAME",
+            namePlaceholder: "Enter your name",
+            emailLabel: "EMAIL",
+            emailPlaceholder: "example@email.com",
+            messageLabel: "MESSAGE",
+            messagePlaceholder: "How can I help you today?",
+            button: "Send Message",
+            sending: "Sending...",
+            successMessage: "Message sent successfully! I will contact you shortly.",
+            errorMessage: "Oops! Something went wrong sending the message. Please try again later."
         },
         frames: {
             loading: "Loading video..."

@@ -13,6 +13,7 @@ const Journey = lazy(() => import('../components/Journey'))
 const Skills = lazy(() => import('../components/Skills'))
 const Certificates = lazy(() => import('../components/Certificates'))
 const Projects = lazy(() => import('../components/Projects'))
+const Contact = lazy(() => import('../components/Contact'))
 const Footer = lazy(() => import('../components/Footer'))
 
 const ENABLE_LOADING = true
@@ -69,6 +70,7 @@ export default function Home() {
                     <Skills />
                     <Projects />
                     <Certificates />
+                    <Contact />
                     <Footer />
                 </Suspense>
             </div>
