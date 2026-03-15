@@ -9,7 +9,7 @@ const Navbar = () => {
   const navItems = [
     { key: 'curriculum', label: t.navbar.curriculum, path: '/curriculo' },
     { key: 'projects', label: t.navbar.projects, path: '/#projetos' },
-    { key: 'contact', label: t.navbar.contact, path: '/#contato' },
+    { key: 'contact', label: t.navbar.contact, path: '/#contatar' },
   ];
 
   const closeMenu = () => setIsMenuOpen(false);

@@ -65,6 +65,11 @@ export const translations = {
                     id: 4,
                     name: "Catálogo de Produtos",
                     description: "Aplicação full-stack para gerenciamento de produtos. Inclui API REST, cache em Redis, interface web moderna, exportação de dados e testes automatizados. Usuários podem criar, atualizar, excluir e acompanhar produtos com dashboards e histórico de alterações."
+                },
+                {
+                    id: 5,
+                    name: "Aplicativo Mobile",
+                    description: "Em desenvolvimento: Aplicativo cross-platform criado com React Native e Expo focado em usabilidade móvel moderna e alta performance."
                 }
             ]
         },
@@ -157,6 +162,20 @@ export const translations = {
                 }
             ]
         },
+        contact: {
+            title: "Vamos Conversar?",
+            subtitle: "Tem algum projeto em mente ou oportunidade? Envie-me uma mensagem e retornarei o mais breve possível.",
+            nameLabel: "NOME",
+            namePlaceholder: "Digite seu nome",
+            emailLabel: "E-MAIL",
+            emailPlaceholder: "exemplo@email.com",
+            messageLabel: "MENSAGEM",
+            messagePlaceholder: "Como posso ajudar você hoje?",
+            button: "Enviar Mensagem",
+            sending: "Enviando...",
+            successMessage: "Mensagem enviada com sucesso! Entrarei em contato em breve.",
+            errorMessage: "Ops! Algo deu errado ao enviar a mensagem. Tente novamente mais tarde."
+        },
         frames: {
             loading: "Carregando vídeo..."
         },
@@ -238,6 +257,11 @@ export const translations = {
                     id: 4,
                     name: "Product Catalog",
                     description: "Full-stack application for product management. Features REST API, Redis caching, modern web interface, data export, and automated testing. Users can create, update, delete, and track products using dashboards and change history."
+                },
+                {
+                    id: 5,
+                    name: "Mobile Application",
+                    description: "In development: A cross-platform app built with React Native and Expo focusing on modern mobile usability and high performance."
                 }
             ]
         },
@@ -329,6 +353,20 @@ export const translations = {
                     title: "React Native: create applications with JavaScript"
                 }
             ]
+        },
+        contact: {
+            title: "Let's Talk?",
+            subtitle: "Have a project in mind or an opportunity? Send me a message and I'll get back to you as soon as possible.",
+            nameLabel: "NAME",
+            namePlaceholder: "Enter your name",
+            emailLabel: "EMAIL",
+            emailPlaceholder: "example@email.com",
+            messageLabel: "MESSAGE",
+            messagePlaceholder: "How can I help you today?",
+            button: "Send Message",
+            sending: "Sending...",
+            successMessage: "Message sent successfully! I will contact you shortly.",
+            errorMessage: "Oops! Something went wrong sending the message. Please try again later."
         },
         frames: {
             loading: "Loading video..."

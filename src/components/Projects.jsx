@@ -16,14 +16,15 @@ const ProjectCard = ({ project, index, x, t }) => {
         { tech: ["React", "Tailwind", "Framer Motion", "Vercel"], github: "https://github.com/Kayke-Queiroz/Repository", url: "#" },
         { tech: ["TypeScript", "Node.js", "Strapi", "SQLite"], github: "https://github.com/Kayke-Queiroz/Movies", url: " https://movies-mu-green.vercel.app/" },
         { tech: ["Flask", "MongoDB", "Docker", "Redis"], github: "https://github.com/Kayke-Queiroz/Project-Big-Data", url: "#" },
+        { tech: ["React Native", "Expo", "TypeScript", "UI/UX"], github: "#", url: "#" }
     ];
 
     const projectStatic = staticData[index] || { tech: [], github: "#", url: "#" };
     const TOTAL_ITEMS = staticData.length;
     const TOTAL_WIDTH = TOTAL_ITEMS * (CARD_WIDTH + CARD_GAP);
 
-    // Posição base do card no carrossel, centralizando o bloco inteiro
-    const baseOffset = (index * (CARD_WIDTH + CARD_GAP)) - (TOTAL_WIDTH / 2) + ((CARD_WIDTH + CARD_GAP) / 2);
+    // Posição base do card no carrossel (Garante que o index 0 fique perfeitamente focado no centro da tela inicialmente)
+    const baseOffset = index * (CARD_WIDTH + CARD_GAP);
 
     // Lógica de loop infinito
     const rawPosition = useTransform(x, (currentX) => {
@@ -53,12 +54,13 @@ const ProjectCard = ({ project, index, x, t }) => {
     const zIndex = useTransform(dist, (d) => 100 - Math.floor(d / 10));
 
     // Mapeamento dinâmico do status com base no index. 
-    // Como você tem 4 projetos: Livros, Portfólio, Filmes, Catálogo
+    // Projetos: Livros (0), Portfólio (1), Filmes (2), Catálogo (3), Mobile (4)
     const defaultStatuses = [
         t.projects.status.done, // Livros
         t.projects.status.done, // Portfólio
         t.projects.status.done, // Filmes
-        t.projects.status.done  // Catálogo/Big Data
+        t.projects.status.done, // Catálogo/Big Data
+        t.projects.status.dev   // App Mobile React Native
     ];
     const statusLabel = defaultStatuses[index] || t.projects.status.dev;
 
