@@ -245,12 +245,7 @@ const Frames = () => {
         =============================== */}
       </div>
 
-      {/* ===============================
-          INDICADOR (OPCIONAL)
-      =============================== */}
-      <div className="fixed bottom-4 right-4 bg-black/60 px-4 py-2 rounded text-white text-sm z-hud pointer-events-none">
-        {Math.floor(scrollPercent * (frames.length || 0)) + 1} / {frames.length}
-      </div>
+
     </>
   );
 };
