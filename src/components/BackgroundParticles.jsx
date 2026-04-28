@@ -13,7 +13,7 @@ export default function BackgroundParticles({ show }) {
                     particleCount: 100,   // Mais partículas
                     mouseDistance: 200    // Raio de interação maior
                 }}
-                className="pointer-events-auto"
+                className=""
             />
         </div>
     );

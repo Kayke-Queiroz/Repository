@@ -18,7 +18,7 @@ export default function Curriculo() {
                         particleCount: 80,
                         mouseDistance: 200
                     }}
-                    className="opacity-40 pointer-events-auto"
+                    className="opacity-40"
                 />
             </div>
 

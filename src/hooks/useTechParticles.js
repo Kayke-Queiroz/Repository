@@ -143,8 +143,15 @@ export default function useTechParticles(canvasRef, options = {}) {
         };
 
         // Event Listeners
-        const handleResize = () => init();
+        const handleResize = () => {
+            init();
+            if (window.innerWidth <= 768) {
+                mouse.current.x = null;
+                mouse.current.y = null;
+            }
+        };
         const handleMouseMove = (e) => {
+            if (window.innerWidth <= 768) return;
             const rect = canvas.getBoundingClientRect();
             mouse.current.x = e.clientX - rect.left;
             mouse.current.y = e.clientY - rect.top;

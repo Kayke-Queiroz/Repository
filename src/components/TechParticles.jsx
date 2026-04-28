@@ -10,7 +10,7 @@ const TechParticles = ({ className = "", options = {} }) => {
     return (
         <canvas
             ref={canvasRef}
-            className={`absolute inset-0 pointer-events-auto ${className}`}
+            className={`absolute inset-0 pointer-events-none md:pointer-events-auto ${className}`}
             style={{ width: '100%', height: '100%' }}
         />
     );
